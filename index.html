@@ -8632,9 +8632,60 @@ window.triggerMentorRequest = function(mentorId) {
         }
 
         // Global click listener for the send button
+        // Universal Close Handler for all Modals & Panels
+        window.closeChat = function() {
+            const widget = document.getElementById('dmWidget');
+            if (widget) widget.style.display = 'none';
+            activeConversationId = null;
+            if (chatSubscription) {
+                sb.removeChannel(chatSubscription);
+                chatSubscription = null;
+            }
+        };
+
         document.addEventListener('click', (e) => {
             if (e.target.closest('#dmSendBtn')) {
                 handleSendMessage();
+            }
+
+            // 1. Direct Messaging Close
+            if (e.target.closest('#dmCloseBtn') || e.target.id === 'dmCloseBtn') {
+                window.closeChat();
+            }
+
+            // 2. Mentor Profile Modal Close
+            if (e.target.closest('#mentorProfileClose') || e.target.id === 'mentorProfileClose') {
+                const overlay = document.getElementById('mentorProfileOverlay');
+                if (overlay) overlay.classList.remove('show');
+                document.body.style.overflow = '';
+            }
+
+            // 3. Create Event Modal Close
+            if (e.target.closest('#createEventModalClose') || e.target.id === 'createEventModalClose' || e.target.id === 'createEventCancelBtn') {
+                const overlay = document.getElementById('createEventModalOverlay');
+                if (overlay) overlay.classList.remove('show');
+                document.body.style.overflow = '';
+            }
+
+            // 4. About Modal Close
+            if (e.target.closest('#aboutCloseBtn') || e.target.id === 'aboutCloseBtn') {
+                const overlay = document.getElementById('aboutOverlay');
+                if (overlay) overlay.classList.remove('show');
+                document.body.style.overflow = '';
+            }
+
+            // 5. Edit Profile Modal Close
+            if (e.target.closest('#editProfileModalClose') || e.target.id === 'editProfileModalClose') {
+                const overlay = document.getElementById('editProfileModalOverlay');
+                if (overlay) overlay.classList.remove('show');
+                document.body.style.overflow = '';
+            }
+
+            // 6. Mentor Registration Modal Close
+            if (e.target.closest('#mentorModalClose') || e.target.id === 'mentorModalClose') {
+                const overlay = document.getElementById('mentorModalOverlay');
+                if (overlay) overlay.classList.remove('show');
+                document.body.style.overflow = '';
             }
         });
 
@@ -8643,16 +8694,6 @@ window.triggerMentorRequest = function(mentorId) {
             if (e.target.id === 'dmInput' && e.key === 'Enter') {
                 e.preventDefault();
                 handleSendMessage();
-            }
-        });
-
-        // Close widget
-        document.getElementById('dmCloseBtn')?.addEventListener('click', () => {
-            document.getElementById('dmWidget').style.display = 'none';
-            activeConversationId = null;
-            if (chatSubscription) {
-                sb.removeChannel(chatSubscription);
-                chatSubscription = null;
             }
         });
 
@@ -9741,7 +9782,7 @@ window.triggerMentorRequest = function(mentorId) {
             <i class="fas fa-user-circle" style="font-size:20px;"></i>
             <h4 id="dmRecipientName">Chat</h4>
         </div>
-        <button id="dmCloseBtn" style="background:none;border:none;color:#fff;cursor:pointer;font-size:18px;">✕</button>
+        <button id="dmCloseBtn" onclick="window.closeChat()" style="background:none;border:none;color:#fff;cursor:pointer;font-size:18px;" title="Close chat">✕</button>
     </div>
     <div class="dm-body" id="dmMessages">
         <!-- Messages loaded here -->
