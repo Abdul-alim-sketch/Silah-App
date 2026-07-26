@@ -4660,6 +4660,37 @@
         </div>
     </div>
 
+    <!-- ========== CREATE EVENT MODAL ========== -->
+    <div class="mentor-modal-overlay" id="createEventModalOverlay" style="z-index: 4500;">
+        <div class="mentor-modal" style="max-width: 500px;">
+            <button class="about-close" id="createEventModalClose">✕</button>
+            <h2>📅 Create Mosque Event</h2>
+            <p style="font-size:13px; color:var(--text-secondary); margin-bottom:16px;">This event will automatically be attached to your primary mosque community.</p>
+            
+            <form id="createEventForm">
+                <div class="form-group" style="margin-bottom:14px;">
+                    <label style="font-weight:600; font-size:13px; display:block; margin-bottom:4px;">Event Title *</label>
+                    <input type="text" id="eventTitleInput" required placeholder="e.g. Weekly Halaqa Circle" style="width:100%; padding:10px; border:1px solid var(--border-medium); border-radius:var(--radius-sm);" />
+                </div>
+
+                <div class="form-group" style="margin-bottom:14px;">
+                    <label style="font-weight:600; font-size:13px; display:block; margin-bottom:4px;">Date & Time *</label>
+                    <input type="datetime-local" id="eventDateInput" required style="width:100%; padding:10px; border:1px solid var(--border-medium); border-radius:var(--radius-sm);" />
+                </div>
+
+                <div class="form-group" style="margin-bottom:14px;">
+                    <label style="font-weight:600; font-size:13px; display:block; margin-bottom:4px;">Description</label>
+                    <textarea id="eventDescInput" rows="3" placeholder="Details about the event..." style="width:100%; padding:10px; border:1px solid var(--border-medium); border-radius:var(--radius-sm); font-family:inherit;"></textarea>
+                </div>
+
+                <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px;">
+                    <button type="button" id="createEventCancelBtn" style="padding:8px 18px; border:1px solid var(--border-medium); background:transparent; border-radius:var(--radius-sm); cursor:pointer;">Cancel</button>
+                    <button type="submit" id="createEventSubmitBtn" class="btn-primary" style="width:auto; padding:8px 24px;">Post Event</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- ========== APP ========== -->
     <div class="app" id="app">
 
@@ -5146,8 +5177,8 @@
                 <!-- ===== COMMUNITY ===== -->
                 <div class="screen" id="screen-community">
                     <div style="margin-bottom:16px;">
-                        <h2 style="font-family:'Poppins',sans-serif;font-size:22px;">🏘️ My Community</h2>
-                        <p style="color:var(--text-secondary);font-size:14px;">Connect with your local Muslim community, mosques, and fellow believers.</p>
+                        <h2 id="communityHeaderTitle" style="font-family:'Poppins',sans-serif;font-size:22px;">🏘️ My Community</h2>
+                        <p id="communityHeaderSub" style="color:var(--text-secondary);font-size:14px;">Connect with your local Muslim community, mosques, and fellow believers.</p>
                     </div>
 
                     <!-- Join Mosque Section -->
@@ -6008,8 +6039,9 @@
             }
 
             if (screenId === 'community') {
-                loadCommunityContent();
-                loadUserCommunityMemberships();
+                loadUserCommunityMemberships().then(() => {
+                    loadCommunityContent();
+                });
             }
 
             if (screenId === 'learn') {
@@ -6646,6 +6678,8 @@
         }
 
         // ========== COMMUNITY FUNCTIONS ==========
+        let primaryMembership = null;
+
         async function loadUserCommunityMemberships() {
             if (!currentUser) return;
 
@@ -6657,10 +6691,31 @@
 
                 if (error) throw error;
                 userCommunityMemberships = data || [];
+                
+                // Identify Primary Mosque Membership
+                primaryMembership = userCommunityMemberships.find(m => m.is_primary) || userCommunityMemberships[0] || null;
+
+                updateCommunityHeader();
                 renderCommunityJoinStatus();
                 populateMosqueSelect();
             } catch (error) {
                 console.error('Error loading community memberships:', error);
+            }
+        }
+
+        function updateCommunityHeader() {
+            const titleEl = document.getElementById('communityHeaderTitle');
+            const subtitleEl = document.getElementById('communityHeaderSub');
+            if (!titleEl) return;
+
+            if (primaryMembership) {
+                titleEl.textContent = `🕌 ${primaryMembership.mosque_name}`;
+                subtitleEl.textContent = primaryMembership.mosque_address 
+                    ? `📍 ${primaryMembership.mosque_address} · Primary Mosque Community`
+                    : `Primary Mosque Community`;
+            } else {
+                titleEl.textContent = `🏘️ My Community`;
+                subtitleEl.textContent = `Connect with your local Muslim community, mosques, and fellow believers.`;
             }
         }
 
@@ -6675,12 +6730,25 @@
 
             statusDiv.style.display = 'block';
             statusDiv.innerHTML = userCommunityMemberships.map(m => `
-                    <div class="joined-mosque">
-                        <span class="jm-name">🕌 ${m.mosque_name}</span>
-                        ${m.is_primary ? '<span style="font-size:12px;color:var(--green);font-weight:600;">⭐ Primary</span>' : ''}
-                        <button class="jm-leave" data-mosque-id="${m.mosque_id}">Leave</button>
+                <div class="joined-mosque" style="display:flex; justify-content:space-between; align-items:center; background:var(--gray-50); padding:10px 14px; border-radius:var(--radius-sm); margin-top:10px;">
+                    <span class="jm-name" style="font-weight:600;">🕌 ${m.mosque_name}</span>
+                    <div style="display:flex; gap:8px; align-items:center;">
+                        ${m.is_primary 
+                            ? '<span style="font-size:12px;color:var(--green);font-weight:600;background:var(--green-pale);padding:2px 8px;border-radius:10px;">⭐ Primary</span>' 
+                            : `<button class="jm-set-primary" data-mosque-id="${m.mosque_id}" style="font-size:12px;padding:2px 8px;border:1px solid var(--border-medium);background:transparent;border-radius:10px;cursor:pointer;">Set as Primary</button>`
+                        }
+                        <button class="jm-leave" data-mosque-id="${m.mosque_id}" style="font-size:12px;color:var(--red);background:transparent;border:none;cursor:pointer;">Leave</button>
                     </div>
-                `).join('');
+                </div>
+            `).join('');
+
+            statusDiv.querySelectorAll('.jm-set-primary').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const mosqueId = this.dataset.mosqueId;
+                    const m = userCommunityMemberships.find(x => x.mosque_id === mosqueId);
+                    if (m) joinCommunity(m.mosque_id, m.mosque_name, m.mosque_address);
+                });
+            });
 
             statusDiv.querySelectorAll('.jm-leave').forEach(btn => {
                 btn.addEventListener('click', function() {
@@ -6694,17 +6762,16 @@
             const select = document.getElementById('communityMosqueSelect');
             if (!select) return;
 
-            // Get mosques from the list
             const mosqueList = document.getElementById('mosqueList');
             const mosqueRows = mosqueList.querySelectorAll('.mosque-row.dynamic');
 
+            select.innerHTML = '<option value="">-- Select a mosque --</option>';
+
             if (mosqueRows.length > 0) {
-                select.innerHTML = '<option value="">-- Select a mosque --</option>';
                 mosqueRows.forEach(row => {
                     const name = row.querySelector('.mq-info h4')?.textContent || 'Unnamed Mosque';
                     const detail = row.querySelector('.mq-detail')?.textContent || '';
                     const value = name + '|' + detail;
-                    // Check if already joined
                     const isJoined = userCommunityMemberships.some(m => m.mosque_name === name);
                     if (!isJoined) {
                         const option = document.createElement('option');
@@ -6714,12 +6781,10 @@
                     }
                 });
             } else {
-                // Try to get from localStorage if available
                 const savedMosques = localStorage.getItem('silah-nearby-mosques');
                 if (savedMosques) {
                     try {
                         const mosques = JSON.parse(savedMosques);
-                        select.innerHTML = '<option value="">-- Select a mosque --</option>';
                         mosques.forEach(m => {
                             const name = m.name || 'Unnamed Mosque';
                             const isJoined = userCommunityMemberships.some(mem => mem.mosque_name === name);
@@ -6734,7 +6799,6 @@
                 }
             }
 
-            // Also add any mosques from the API that aren't in the list
             const allMosques = JSON.parse(localStorage.getItem('silah-all-mosques') || '[]');
             allMosques.forEach(m => {
                 const name = m.name || 'Unnamed Mosque';
@@ -6761,7 +6825,7 @@
             await joinCommunity(name, name, address);
         });
 
-        // Community tab switching (Members / Imams / New Converts / Events / Mosques)
+        // Community tab switching
         document.querySelectorAll('.community-tabs .community-tab').forEach(function(tabBtn) {
             tabBtn.addEventListener('click', function() {
                 const target = tabBtn.dataset.tab;
@@ -6777,33 +6841,48 @@
             });
         });
 
-        async function joinCommunity(mosqueId, mosqueName, mosqueAddress) {
+        // Step 1: Join Mosque and set primary
+        async function joinCommunity(mosqueId, mosqueName, mosqueAddress, lat = null, lon = null) {
             if (!currentUser) {
                 showModerationToast('Please sign in to join a community.', 'warning');
                 return;
             }
 
-            const existing = userCommunityMemberships.find(m => m.mosque_id === mosqueId || m.mosque_name === mosqueName);
-            if (existing) {
-                showModerationToast(`You're already part of ${mosqueName}!`, 'info');
-                return;
-            }
+            const cleanMosqueId = mosqueId || mosqueName.replace(/\s+/g, '_').toLowerCase();
 
             try {
-                const { data, error } = await sb
+                // Remove previous primary status
+                await sb
                     .from('community_memberships')
-                    .insert({
-                        user_id: currentUser.id,
-                        mosque_id: mosqueId || mosqueName.replace(/\s/g, '_').toLowerCase(),
-                        mosque_name: mosqueName,
-                        mosque_address: mosqueAddress || '',
-                        is_primary: userCommunityMemberships.length === 0
-                    });
+                    .update({ is_primary: false })
+                    .eq('user_id', currentUser.id)
+                    .eq('is_primary', true);
 
-                if (error) throw error;
+                const existing = userCommunityMemberships.find(m => m.mosque_id === cleanMosqueId);
+                
+                if (existing) {
+                    const { error: updateErr } = await sb
+                        .from('community_memberships')
+                        .update({ is_primary: true })
+                        .eq('id', existing.id);
+                    if (updateErr) throw updateErr;
+                } else {
+                    const { error: insertErr } = await sb
+                        .from('community_memberships')
+                        .insert({
+                            user_id: currentUser.id,
+                            mosque_id: cleanMosqueId,
+                            mosque_name: mosqueName,
+                            mosque_address: mosqueAddress || '',
+                            mosque_lat: lat || null,
+                            mosque_lon: lon || null,
+                            is_primary: true
+                        });
+                    if (insertErr) throw insertErr;
+                }
 
                 await loadUserCommunityMemberships();
-                showModerationToast(`🎉 You've joined the ${mosqueName} community!`, 'success');
+                showModerationToast(`🎉 Set ${mosqueName} as your primary mosque community!`, 'success');
                 loadCommunityContent();
                 populateMosqueSelect();
             } catch (error) {
@@ -6834,263 +6913,235 @@
             }
         }
 
-        // Load all community content
+        // Step 2 & 8: Load Community Content for primary mosque
         async function loadCommunityContent() {
+            if (!primaryMembership) {
+                renderNoPrimaryCommunityState();
+                return;
+            }
+
             await Promise.all([
-                loadCommunityMembers(),
-                loadCommunityImams(),
-                loadCommunityConverts(),
-                loadCommunityEvents(),
+                loadMosquePeople(),
+                loadMosqueEvents(),
                 loadCommunityMosques()
             ]);
         }
 
-        // Load community members
-        async function loadCommunityMembers() {
-            const panel = document.getElementById('communityMembersPanel');
-            if (!panel) return;
+        function renderNoPrimaryCommunityState() {
+            ['communityMembersPanel', 'communityImamsPanel', 'communityConvertsPanel', 'communityEventsPanel'].forEach(id => {
+                const panel = document.getElementById(id);
+                if (panel) {
+                    panel.innerHTML = `
+                        <div style="text-align:center;padding:34px 20px;color:var(--text-secondary);">
+                            <i class="fas fa-mosque" style="font-size:36px;color:var(--gold);display:block;margin-bottom:12px;"></i>
+                            <h3 style="font-size:16px;color:var(--text-primary);margin-bottom:6px;">No Primary Mosque Selected</h3>
+                            <p style="font-size:14px;max-width:420px;margin:0 auto 16px;">Select a local mosque above to join its community, connect with members, imams, new converts, and attend events.</p>
+                        </div>
+                    `;
+                }
+            });
+        }
 
-            const mosqueIds = userCommunityMemberships.map(m => m.mosque_id);
-            if (mosqueIds.length === 0) {
-                panel.innerHTML = `
-                    <div style="text-align:center;padding:30px;color:var(--text-secondary);">
-                        <i class="fas fa-users" style="font-size:32px;color:var(--gray-300);display:block;margin-bottom:10px;"></i>
-                        <p>Join a mosque community to see members.</p>
-                        <p style="font-size:13px;margin-top:4px;">Use the "Join Your Local Mosque" section above.</p>
-                    </div>
-                `;
-                return;
-            }
+        // Step 3, 4, 5: Load Everyone in the Same Mosque (Members, Imams, Converts)
+        async function loadMosquePeople() {
+            const membersPanel = document.getElementById('communityMembersPanel');
+            const imamsPanel = document.getElementById('communityImamsPanel');
+            const convertsPanel = document.getElementById('communityConvertsPanel');
+
+            if (!primaryMembership) return;
 
             try {
-                const { data: memberships, error } = await sb
+                // Step 3: Query everyone in the same mosque (matching by mosque_id or mosque_name)
+                const { data: members, error } = await sb
                     .from('community_memberships')
-                    .select('user_id, profiles:user_id(full_name, location)')
-                    .in('mosque_id', mosqueIds)
-                    .neq('user_id', currentUser?.id);
+                    .select(`
+                        user_id,
+                        mosque_id,
+                        mosque_name,
+                        profiles:user_id (full_name, location),
+                        community_profiles:user_id (about_me, occupation, education, is_imam, is_convert, show_in_community, convert_date)
+                    `)
+                    .or(`mosque_id.eq."${primaryMembership.mosque_id}",mosque_name.eq."${primaryMembership.mosque_name}"`);
 
-                if (error) throw error;
+                let memberRows = members || [];
 
-                // Get community profiles
-                const userIds = memberships.map(m => m.user_id);
-                const { data: profiles } = await sb
-                    .from('community_profiles')
-                    .select('*')
-                    .in('id', userIds);
+                if (error || !memberRows.length) {
+                    const { data: mRows } = await sb
+                        .from('community_memberships')
+                        .select('user_id, mosque_id, mosque_name')
+                        .or(`mosque_id.eq."${primaryMembership.mosque_id}",mosque_name.eq."${primaryMembership.mosque_name}"`);
+                    
+                    if (mRows && mRows.length) {
+                        const uIds = mRows.map(m => m.user_id);
+                        const [{ data: pData }, { data: cpData }] = await Promise.all([
+                            sb.from('profiles').select('id, full_name, location').in('id', uIds),
+                            sb.from('community_profiles').select('*').in('id', uIds)
+                        ]);
+                        const pMap = {}, cpMap = {};
+                        (pData || []).forEach(p => pMap[p.id] = p);
+                        (cpData || []).forEach(cp => cpMap[cp.id] = cp);
 
-                const profileMap = {};
-                (profiles || []).forEach(p => profileMap[p.id] = p);
-
-                if (!memberships || memberships.length === 0) {
-                    panel.innerHTML = `
-                        <div style="text-align:center;padding:30px;color:var(--text-secondary);">
-                            <i class="fas fa-user-plus" style="font-size:32px;color:var(--gray-300);display:block;margin-bottom:10px;"></i>
-                            <p>No members found in your communities yet.</p>
-                        </div>
-                    `;
-                    return;
+                        memberRows = mRows.map(m => ({
+                            user_id: m.user_id,
+                            profiles: pMap[m.user_id] || {},
+                            community_profiles: cpMap[m.user_id] || {}
+                        }));
+                    }
                 }
 
-                panel.innerHTML = memberships.map(m => {
-                    const profile = m.profiles || {};
-                    const name = profile.full_name || 'Unknown User';
-                    const initials = getInitials(name);
-                    const loc = profile.location || 'Location not set';
-                    const communityProfile = profileMap[m.user_id] || {};
+                console.log(`[Silah Community] Members fetched for ${primaryMembership.mosque_name}:`, memberRows);
 
-                    return `
-                        <div class="community-profile-card">
-                            <div class="cp-avatar">${initials}</div>
-                            <div class="cp-info">
-                                <div class="cp-name">${name} <span class="cp-badge member">Member</span></div>
-                                <div class="cp-detail">📍 ${loc}</div>
-                                ${communityProfile.about_me ? `<div class="cp-detail">${communityProfile.about_me}</div>` : ''}
-                            </div>
-                            <div class="cp-actions">
-                                <button class="cp-msg" onclick="showModerationToast('Message ${name}', 'info', 2000)"><i class="fas fa-envelope"></i></button>
-                                <button class="cp-view" onclick="showModerationToast('View ${name}\'s profile', 'info', 2000)">View</button>
-                            </div>
-                        </div>
-                    `;
-                }).join('');
+                // Step 4: Hide users who don't want to appear
+                const visibleMembers = memberRows.filter(m => {
+                    const cp = Array.isArray(m.community_profiles) ? m.community_profiles[0] : m.community_profiles;
+                    return cp ? cp.show_in_community !== false : true;
+                });
 
-            } catch (error) {
-                console.error('Error loading community members:', error);
-                panel.innerHTML = `<div style="text-align:center;padding:20px;color:var(--text-secondary);">Failed to load members.</div>`;
-            }
-        }
+                // Step 5: Separate members into sections
+                const imams = visibleMembers.filter(m => {
+                    const cp = Array.isArray(m.community_profiles) ? m.community_profiles[0] : m.community_profiles;
+                    return cp && cp.is_imam;
+                });
 
-        // Load community imams
-        async function loadCommunityImams() {
-            const panel = document.getElementById('communityImamsPanel');
-            if (!panel) return;
+                const converts = visibleMembers.filter(m => {
+                    const cp = Array.isArray(m.community_profiles) ? m.community_profiles[0] : m.community_profiles;
+                    return cp && cp.is_convert;
+                });
 
-            try {
-                const { data: imams, error } = await sb
-                    .from('community_profiles')
-                    .select('*, profiles:user_id(full_name, location)')
-                    .eq('is_imam', true);
+                const regularMembers = visibleMembers.filter(m => {
+                    const cp = Array.isArray(m.community_profiles) ? m.community_profiles[0] : m.community_profiles;
+                    return !cp || (!cp.is_imam && !cp.is_convert);
+                });
 
-                if (error) throw error;
-
-                let html = '';
-
-                // Platform imams
-                const platformImams = (imams || []).filter(i => i.profiles);
-                if (platformImams.length > 0) {
-                    html += `<div style="font-weight:600;color:var(--text-primary);margin:10px 0 8px;">👥 Imams on Silah</div>`;
-                    html += platformImams.map(imam => {
-                        const profile = imam.profiles || {};
-                        const name = profile.full_name || 'Unknown Imam';
-                        const initials = getInitials(name);
-                        const loc = profile.location || 'Location not set';
-                        return `
-                            <div class="community-profile-card">
-                                <div class="cp-avatar">${initials}</div>
-                                <div class="cp-info">
-                                    <div class="cp-name">${name} <span class="cp-badge imam">Imam</span></div>
-                                    <div class="cp-detail">📍 ${loc}</div>
-                                    ${imam.about_me ? `<div class="cp-detail">${imam.about_me}</div>` : ''}
-                                    ${imam.education ? `<div class="cp-detail">🎓 ${imam.education}</div>` : ''}
-                                </div>
-                                <div class="cp-actions">
-                                    <button class="cp-msg" onclick="showModerationToast('Message ${name}', 'info', 2000)"><i class="fas fa-envelope"></i></button>
-                                    <button class="cp-view" onclick="showModerationToast('View ${name}\'s profile', 'info', 2000)">View</button>
-                                </div>
+                // Render Regular Members Panel
+                if (membersPanel) {
+                    if (regularMembers.length === 0) {
+                        membersPanel.innerHTML = `
+                            <div style="text-align:center;padding:30px;color:var(--text-secondary);">
+                                <i class="fas fa-users" style="font-size:32px;color:var(--gray-300);display:block;margin-bottom:10px;"></i>
+                                <p>No members listed yet for ${primaryMembership.mosque_name}.</p>
                             </div>
                         `;
-                    }).join('');
+                    } else {
+                        membersPanel.innerHTML = regularMembers.map(m => renderUserCard(m, 'Member')).join('');
+                    }
                 }
 
-                if (!html) {
-                    panel.innerHTML = `
-                        <div style="text-align:center;padding:30px;color:var(--text-secondary);">
-                            <i class="fas fa-mosque" style="font-size:32px;color:var(--gray-300);display:block;margin-bottom:10px;"></i>
-                            <p>No imams found in your communities yet.</p>
-                        </div>
-                    `;
-                } else {
-                    panel.innerHTML = html;
-                }
-
-            } catch (error) {
-                console.error('Error loading imams:', error);
-                panel.innerHTML = `<div style="text-align:center;padding:20px;color:var(--text-secondary);">Failed to load imams.</div>`;
-            }
-        }
-
-        // Load new converts
-        async function loadCommunityConverts() {
-            const panel = document.getElementById('communityConvertsPanel');
-            if (!panel) return;
-
-            try {
-                const { data: converts, error } = await sb
-                    .from('community_profiles')
-                    .select('*, profiles:user_id(full_name, location)')
-                    .eq('is_convert', true);
-
-                if (error) throw error;
-
-                let html = '';
-                const platformConverts = (converts || []).filter(c => c.profiles);
-
-                if (platformConverts.length > 0) {
-                    html = platformConverts.map(convert => {
-                        const profile = convert.profiles || {};
-                        const name = profile.full_name || 'Unknown';
-                        const initials = getInitials(name);
-                        const loc = profile.location || 'Location not set';
-                        const convertDate = convert.convert_date ? new Date(convert.convert_date).toLocaleDateString() :
-                            'Recently';
-                        return `
-                            <div class="community-profile-card">
-                                <div class="cp-avatar">${initials}</div>
-                                <div class="cp-info">
-                                    <div class="cp-name">${name} <span class="cp-badge convert">🔄 New Convert</span></div>
-                                    <div class="cp-detail">📍 ${loc}</div>
-                                    <div class="cp-detail">📅 Converted: ${convertDate}</div>
-                                    ${convert.about_me ? `<div class="cp-detail">${convert.about_me}</div>` : ''}
-                                </div>
-                                <div class="cp-actions">
-                                    <button class="cp-msg" onclick="showModerationToast('Message ${name}', 'info', 2000)"><i class="fas fa-envelope"></i></button>
-                                    <button class="cp-view" onclick="showModerationToast('View ${name}\'s profile', 'info', 2000)">View</button>
-                                </div>
+                // Render Imams Panel
+                if (imamsPanel) {
+                    if (imams.length === 0) {
+                        imamsPanel.innerHTML = `
+                            <div style="text-align:center;padding:30px;color:var(--text-secondary);">
+                                <i class="fas fa-mosque" style="font-size:32px;color:var(--gray-300);display:block;margin-bottom:10px;"></i>
+                                <p>No imams registered for ${primaryMembership.mosque_name} yet.</p>
                             </div>
                         `;
-                    }).join('');
+                    } else {
+                        imamsPanel.innerHTML = imams.map(m => renderUserCard(m, 'Imam', 'imam')).join('');
+                    }
                 }
 
-                if (!html) {
-                    panel.innerHTML = `
-                        <div style="text-align:center;padding:30px;color:var(--text-secondary);">
-                            <i class="fas fa-hand-holding-heart" style="font-size:32px;color:var(--gray-300);display:block;margin-bottom:10px;"></i>
-                            <p>No new converts found in your communities yet.</p>
-                            <p style="font-size:13px;margin-top:4px;">New converts will appear here when they join.</p>
-                        </div>
-                    `;
-                } else {
-                    panel.innerHTML = html;
+                // Render Converts Panel
+                if (convertsPanel) {
+                    if (converts.length === 0) {
+                        convertsPanel.innerHTML = `
+                            <div style="text-align:center;padding:30px;color:var(--text-secondary);">
+                                <i class="fas fa-hand-holding-heart" style="font-size:32px;color:var(--gray-300);display:block;margin-bottom:10px;"></i>
+                                <p>No new converts registered for ${primaryMembership.mosque_name} yet.</p>
+                            </div>
+                        `;
+                    } else {
+                        convertsPanel.innerHTML = converts.map(m => renderUserCard(m, '🔄 New Convert', 'convert')).join('');
+                    }
                 }
 
-            } catch (error) {
-                console.error('Error loading converts:', error);
-                panel.innerHTML = `<div style="text-align:center;padding:20px;color:var(--text-secondary);">Failed to load converts.</div>`;
+            } catch (err) {
+                console.error('Error loading mosque people:', err);
             }
         }
 
-        // Load community events
-        async function loadCommunityEvents() {
+        function renderUserCard(m, badgeLabel, badgeClass = 'member') {
+            const prof = Array.isArray(m.profiles) ? m.profiles[0] : m.profiles || {};
+            const cp = Array.isArray(m.community_profiles) ? m.community_profiles[0] : m.community_profiles || {};
+            const name = prof.full_name || 'Community Member';
+            const initials = getInitials(name);
+            const loc = prof.location || 'Location not set';
+
+            return `
+                <div class="community-profile-card">
+                    <div class="cp-avatar">${initials}</div>
+                    <div class="cp-info">
+                        <div class="cp-name">${name} <span class="cp-badge ${badgeClass}">${badgeLabel}</span></div>
+                        <div class="cp-detail">📍 ${loc}</div>
+                        ${cp.about_me ? `<div class="cp-detail">${cp.about_me}</div>` : ''}
+                        ${cp.occupation ? `<div class="cp-detail">💼 ${cp.occupation}</div>` : ''}
+                        ${cp.education ? `<div class="cp-detail">🎓 ${cp.education}</div>` : ''}
+                    </div>
+                    <div class="cp-actions">
+                        <button class="cp-msg" onclick="openChat('${m.user_id}', '${name.replace(/'/g, "\\'")}')"><i class="fas fa-envelope"></i> Message</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Step 6: Load Only Mosque Events
+        async function loadMosqueEvents() {
             const panel = document.getElementById('communityEventsPanel');
-            if (!panel) return;
+            if (!panel || !primaryMembership) return;
 
             try {
                 const { data: events, error } = await sb
                     .from('community_events')
                     .select('*')
+                    .eq('mosque_id', primaryMembership.mosque_id)
                     .order('event_date', { ascending: true });
 
                 if (error) throw error;
 
+                let createBtnHtml = `
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+                        <span style="font-weight:600; font-size:15px; color:var(--text-primary);">Events at ${primaryMembership.mosque_name}</span>
+                        <button class="btn-primary" id="openCreateEventBtn" style="width:auto; padding:6px 16px; font-size:13px;">
+                            <i class="fas fa-plus"></i> Create Event
+                        </button>
+                    </div>
+                `;
+
                 if (!events || events.length === 0) {
-                    panel.innerHTML = `
+                    panel.innerHTML = createBtnHtml + `
                         <div style="text-align:center;padding:30px;color:var(--text-secondary);">
                             <i class="fas fa-calendar-plus" style="font-size:32px;color:var(--gray-300);display:block;margin-bottom:10px;"></i>
-                            <p>No upcoming events in your communities.</p>
-                            <p style="font-size:13px;margin-top:4px;">Events will appear here when they are created.</p>
+                            <p>No upcoming events for ${primaryMembership.mosque_name}.</p>
+                            <p style="font-size:13px;margin-top:4px;">Be the first to create an event for your mosque community!</p>
                         </div>
                     `;
+                    attachCreateEventTrigger();
                     return;
                 }
 
-                panel.innerHTML = `
+                panel.innerHTML = createBtnHtml + `
                     <div class="community-events-grid">
                         ${events.map(event => `
-                            <div class="event-card" data-event="${event.title.toLowerCase().replace(/\s/g, '-')}">
+                            <div class="event-card">
                                 <div class="ev-left">
                                     <div class="ev-icon">${event.is_virtual ? '💻' : '🕌'}</div>
                                     <div class="ev-info">
                                         <h4>${event.title}</h4>
-                                        <div class="ev-loc">${event.is_virtual ? '🖥️ Virtual' : '📍 ' + (event.location || event.address || 'Location TBD')}</div>
+                                        <div class="ev-loc">${event.is_virtual ? '🖥️ Virtual' : '📍 ' + (event.location || event.mosque_name || 'Mosque')}</div>
                                         <div class="ev-meta">
-                                            <span>🗓 ${new Date(event.event_date).toLocaleString()}</span>
-                                            ${event.is_virtual && event.virtual_link ? `<span>🔗 <a href="${event.virtual_link}" target="_blank" style="color:var(--blue);text-decoration:none;">Join Link</a></span>` : ''}
-                                            <span class="tag">${event.max_attendees ? '👥 ' + event.max_attendees + ' spots' : '👥 Open'}</span>
+                                            <span>🗓 ${new Date(event.event_date).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' })}</span>
                                         </div>
                                         ${event.description ? `<div style="font-size:13px;color:var(--text-secondary);margin-top:4px;">${event.description}</div>` : ''}
-                                        ${event.islamic_significance ? `<div style="font-size:12px;color:var(--gold);margin-top:4px;cursor:help;"><i class="fas fa-info-circle"></i> ${event.islamic_significance}</div>` : ''}
                                     </div>
                                 </div>
                                 <div class="ev-right">
                                     <button class="btn-rsvp" data-event-id="${event.id}">RSVP</button>
-                                    <button class="btn-share"><i class="fas fa-share-alt"></i></button>
                                 </div>
                             </div>
                         `).join('')}
                     </div>
                 `;
 
-                // Add RSVP event listeners
                 panel.querySelectorAll('.btn-rsvp').forEach(btn => {
                     btn.addEventListener('click', function(e) {
                         e.stopPropagation();
@@ -7110,11 +7161,76 @@
                     });
                 });
 
-            } catch (error) {
-                console.error('Error loading community events:', error);
-                panel.innerHTML = `<div style="text-align:center;padding:20px;color:var(--text-secondary);">Failed to load events.</div>`;
+                attachCreateEventTrigger();
+            } catch (err) {
+                console.error('Error loading mosque events:', err);
             }
         }
+
+        // Step 7: Create Event Form & Automatic Mosque Attachment
+        function attachCreateEventTrigger() {
+            document.getElementById('openCreateEventBtn')?.addEventListener('click', function() {
+                if (!currentUser) return showModerationToast('Sign in to create an event.', 'warning');
+                if (!primaryMembership) return showModerationToast('Join a mosque community first.', 'warning');
+                
+                const modal = document.getElementById('createEventModalOverlay');
+                if (modal) {
+                    modal.classList.add('show');
+                    document.body.style.overflow = 'hidden';
+                }
+            });
+        }
+
+        function closeCreateEventModal() {
+            const modal = document.getElementById('createEventModalOverlay');
+            if (modal) {
+                modal.classList.remove('show');
+                document.body.style.overflow = '';
+            }
+        }
+
+        document.getElementById('createEventModalClose')?.addEventListener('click', closeCreateEventModal);
+        document.getElementById('createEventCancelBtn')?.addEventListener('click', closeCreateEventModal);
+        document.getElementById('createEventModalOverlay')?.addEventListener('click', function(e) {
+            if (e.target === this) closeCreateEventModal();
+        });
+
+        document.getElementById('createEventForm')?.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            if (!currentUser) return showModerationToast('Please sign in.', 'warning');
+            if (!primaryMembership) return showModerationToast('Please join a mosque community first.', 'warning');
+
+            const title = document.getElementById('eventTitleInput').value.trim();
+            const event_date = document.getElementById('eventDateInput').value;
+            const description = document.getElementById('eventDescInput').value.trim();
+
+            if (!title || !event_date) {
+                showModerationToast('Title and date are required.', 'warning');
+                return;
+            }
+
+            try {
+                const { error } = await sb
+                    .from('community_events')
+                    .insert({
+                        mosque_id: primaryMembership.mosque_id,
+                        mosque_name: primaryMembership.mosque_name,
+                        title,
+                        description,
+                        event_date,
+                        created_by: currentUser.id
+                    });
+
+                if (error) throw error;
+
+                closeCreateEventModal();
+                showModerationToast('🎉 Event created successfully!', 'success');
+                loadMosqueEvents();
+            } catch (err) {
+                console.error('Error creating event:', err);
+                showModerationToast('Failed to create event. Please try again.', 'error');
+            }
+        });
 
         // Load community mosques
         async function loadCommunityMosques() {
