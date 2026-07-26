@@ -18,10 +18,10 @@ app.get('/', (req, res) => {
 });
 
 // ============================================================
-// TEST ROUTE – to verify server is running
+// UPTIME ROBOT HEALTH CHECK ENDPOINT
 // ============================================================
-app.get('/ping', (req, res) => {
-    res.json({ message: 'pong', status: 'Server is running (Gemini + Mosque proxy)' });
+app.get('/api/health', (req, res) => {
+    res.status(200).json({ status: 'ok' });
 });
 
 // ============================================================
@@ -266,9 +266,9 @@ app.get('/api/mosques', async (req, res) => {
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
     console.log(`✅ Merged server running on http://localhost:${PORT}`);
-    console.log(`   📌 Web App: http://localhost:${PORT} (serving index2.html)`);
-    console.log(`   📌 GET  /ping          (test)`);
-    console.log(`   📌 POST /api/chat      (Gemini AI)`);
-    console.log(`   📌 POST /api/moderate  (OpenAI Moderation proxy)`);
-    console.log(`   📌 GET  /api/mosques   (Mosque proxy with geocoding)`);
+    console.log(`   📌 Web App:    http://localhost:${PORT}`);
+    console.log(`   📌 GET  /api/health   (Uptime Robot)`);
+    console.log(`   📌 POST /api/chat     (Gemini AI)`);
+    console.log(`   📌 POST /api/moderate (OpenAI Moderation)`);
+    console.log(`   📌 GET  /api/mosques  (Mosque proxy)`);
 });
