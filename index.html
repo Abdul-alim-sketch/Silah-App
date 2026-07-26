@@ -260,7 +260,8 @@
         .form-group input[type="text"],
         .form-group input[type="email"],
         .form-group input[type="password"],
-        .form-group textarea {
+        .form-group textarea,
+        .form-group select {
             width: 100%;
             padding: 12px 16px;
             border: 2px solid var(--border-medium);
@@ -280,9 +281,14 @@
         .form-group input[type="text"]:focus,
         .form-group input[type="email"]:focus,
         .form-group input[type="password"]:focus,
-        .form-group textarea:focus {
+        .form-group textarea:focus,
+        .form-group select:focus {
             border-color: var(--green);
             box-shadow: 0 0 0 4px rgba(26, 107, 79, 0.08);
+        }
+        .form-group select {
+            appearance: auto;
+            cursor: pointer;
         }
 
         .auth-switch {
@@ -613,8 +619,6 @@
             flex-shrink: 0;
             position: relative;
         }
-
-
 
         .topbar-right .icon-btn {
             width: 40px;
@@ -1063,40 +1067,57 @@
             gap: 8px;
             font-weight: 500;
         }
-        [data-theme="dark"] #onboardingStep .radio-option,
-        [data-theme="dark"] #onboardingStep .checkbox-option {
+        /* ===== CHECKBOX & RADIO OPTIONS (GLOBAL) ===== */
+        .radio-option, .checkbox-option {
+            padding: 10px 14px;
+            border: 1px solid var(--border-medium);
+            border-radius: var(--radius-sm);
+            background: var(--input-bg);
+            color: var(--text-primary);
+            font-size: 13px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all var(--transition);
+            user-select: none;
+        }
+        [data-theme="dark"] .radio-option,
+        [data-theme="dark"] .checkbox-option {
             background: var(--gray-100);
             border-color: var(--border-light);
         }
-        #onboardingStep .radio-option:hover,
-        #onboardingStep .checkbox-option:hover {
+        .radio-option:hover,
+        .checkbox-option:hover {
             border-color: var(--green);
             background: var(--green-pale);
         }
-        #onboardingStep .radio-option.selected,
-        #onboardingStep .checkbox-option.selected {
+        .radio-option.selected,
+        .checkbox-option.selected {
             border-color: var(--green);
             background: var(--green-pale);
             box-shadow: 0 0 0 2px rgba(26, 107, 79, 0.15);
+            font-weight: 600;
         }
-        [data-theme="dark"] #onboardingStep .radio-option.selected,
-        [data-theme="dark"] #onboardingStep .checkbox-option.selected {
+        [data-theme="dark"] .radio-option.selected,
+        [data-theme="dark"] .checkbox-option.selected {
             background: #1a2f26;
             border-color: #2ea87a;
+            color: #4ade80;
         }
-        #onboardingStep .radio-option i,
-        #onboardingStep .checkbox-option i {
+        .radio-option i,
+        .checkbox-option i {
             color: var(--gray-400);
             transition: color var(--transition);
             font-size: 16px;
         }
-        #onboardingStep .radio-option.selected i,
-        #onboardingStep .checkbox-option.selected i {
+        .radio-option.selected i,
+        .checkbox-option.selected i {
             color: var(--green);
         }
-        #onboardingStep .checkbox-option {
-            flex: 1 1 calc(33.333% - 10px);
-            min-width: 120px;
+        [data-theme="dark"] .radio-option.selected i,
+        [data-theme="dark"] .checkbox-option.selected i {
+            color: #4ade80;
         }
         #onboardingStep .onboarding-footer {
             text-align: center;
@@ -1173,8 +1194,8 @@
             position: relative;
             z-index: 1;
             display: flex;
-            flex-direction: column; /* Stack elements vertically */
-            align-items: center;    /* Center everything horizontally */
+            flex-direction: column;
+            align-items: center;
             justify-content: center;
             gap: 14px;
         }
@@ -1201,7 +1222,7 @@
         .quran-verse-widget .qv-content {
             flex: 1;
             width: 100%;
-            max-width: 650px; /* Constrains the width so text wraps beautifully */
+            max-width: 650px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -1209,12 +1230,12 @@
 
         .quran-verse-widget .qv-arabic {
             font-family: 'Amiri', 'Traditional Arabic', serif;
-            font-size: 28px; /* Slightly larger for emphasis */
+            font-size: 28px;
             line-height: 1.8;
             color: #3d2e0a;
             margin-bottom: 8px;
             direction: rtl;
-            text-align: center; /* Force center alignment */
+            text-align: center;
             font-weight: 700;
             letter-spacing: 1px;
             transition: color var(--transition-theme);
@@ -1230,7 +1251,7 @@
             line-height: 1.6;
             font-style: italic;
             margin-bottom: 8px;
-            text-align: center; /* Force center alignment */
+            text-align: center;
             transition: color var(--transition-theme);
         }
 
@@ -1243,7 +1264,7 @@
             color: var(--gold);
             font-weight: 600;
             letter-spacing: 0.5px;
-            text-align: center; /* Force center alignment */
+            text-align: center;
         }
 
         .quran-verse-widget .qv-refresh {
@@ -1325,14 +1346,14 @@
             opacity: 0.8;
         }
         .prayer-box .prayer-check {
-            width: 24px; 
+            width: 24px;
             height: 24px;
             border-radius: 50%;
             border: 2px solid var(--gray-300);
-            display: flex; 
-            align-items: center; 
+            display: flex;
+            align-items: center;
             justify-content: center;
-            font-size: 12px; 
+            font-size: 12px;
             color: transparent;
             transition: all var(--transition);
             margin-top: 4px;
@@ -1655,7 +1676,6 @@
         .mentor-card .mentor-actions .btn-msg:hover {
             background: var(--gray-200);
         }
-
 
         .ai-tip {
             margin-top: 12px;
@@ -2040,7 +2060,7 @@
         .mentor-modal {
             background: var(--card-bg);
             border-radius: var(--radius);
-            max-width: 520px;
+            max-width: 560px;
             width: 100%;
             max-height: 90vh;
             overflow-y: auto;
@@ -2264,10 +2284,6 @@
         }
         .event-card:hover .ev-significance {
             display: block;
-        }
-        .event-card .ev-left .ev-info .ev-significance i {
-            margin-right: 6px;
-            color: var(--gold);
         }
         .event-card .ev-right {
             display: flex;
@@ -2886,7 +2902,7 @@
             gap: 20px;
         }
         .profile-grid .dash-card {
-            margin-bottom: 20px; /* Changed from 0 to 20px to add spacing */
+            margin-bottom: 20px;
         }
 
         .milestone-item {
@@ -3554,12 +3570,20 @@
         .chat-response .response-text h6:first-child {
             margin-top: 0;
         }
-        .chat-response .response-text h1 { font-size: 20px; }
-        .chat-response .response-text h2 { font-size: 18px; }
-        .chat-response .response-text h3 { font-size: 16px; }
+        .chat-response .response-text h1 {
+            font-size: 20px;
+        }
+        .chat-response .response-text h2 {
+            font-size: 18px;
+        }
+        .chat-response .response-text h3 {
+            font-size: 16px;
+        }
         .chat-response .response-text h4,
         .chat-response .response-text h5,
-        .chat-response .response-text h6 { font-size: 15px; }
+        .chat-response .response-text h6 {
+            font-size: 15px;
+        }
         .chat-response .response-text blockquote {
             margin: 0 0 10px;
             padding: 4px 14px;
@@ -4106,7 +4130,7 @@
             background: var(--card-bg);
             border-radius: var(--radius);
             box-shadow: var(--shadow-lg);
-            display: none; /* Hidden by default */
+            display: none;
             flex-direction: column;
             z-index: 5000;
             overflow: hidden;
@@ -4202,10 +4226,78 @@
         }
         @media (max-width: 600px) {
             .dm-widget {
-                bottom: 0; right: 0; left: 0;
-                width: 100%; height: 100vh; height: 100dvh;
+                bottom: 0;
+                right: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                height: 100dvh;
                 border-radius: 0;
             }
+        }
+
+        /* ========== MINI TOAST ========== */
+        .mini-toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--green);
+            color: #fff;
+            padding: 10px 24px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            z-index: 9999;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            animation: fadeUpToast 0.4s ease, fadeDownToast 0.4s ease 1.6s forwards;
+            pointer-events: none;
+        }
+        @keyframes fadeUpToast {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+        @keyframes fadeDownToast {
+            from {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateX(-50%) translateY(20px);
+            }
+        }
+
+        /* ========== INTERESTS DISPLAY ========== */
+        .interests-tag {
+            display: inline-block;
+            background: var(--green-pale);
+            color: var(--green);
+            padding: 2px 12px;
+            border-radius: var(--radius-full);
+            font-size: 12px;
+            font-weight: 500;
+            margin: 2px 4px 2px 0;
+        }
+        .interests-tag i {
+            margin-right: 4px;
+            font-size: 10px;
+        }
+
+        .convert-detail {
+            font-size: 13px;
+            color: var(--text-secondary);
+            padding: 2px 0;
+        }
+        .convert-detail strong {
+            color: var(--text-primary);
         }
     </style>
 </head>
@@ -4231,7 +4323,7 @@
             <div class="about-credit">
                 <div class="credit-label">✨ Website inspired by <span>Cobalt Coders</span> ✨</div>
             </div>
-            <div class="about-version">v1.4.0 · © 2026 Silah Foundation</div>
+            <div class="about-version">v2.0.0 · © 2026 Silah Foundation</div>
         </div>
     </div>
 
@@ -4255,6 +4347,18 @@
                     <option value="family">Family &amp; Marriage Counseling</option>
                     <option value="other">Other</option>
                 </select>
+            </div>
+
+            <div class="form-group">
+                <label>Teaching Style</label>
+                <select id="mentorTeachingStyle">
+                    <option value="one-on-one">One-on-One</option>
+                    <option value="group">Group Sessions</option>
+                    <option value="both">Both</option>
+                    <option value="lecture">Lecture Style</option>
+                    <option value="interactive">Interactive &amp; Discussion-Based</option>
+                </select>
+                <div class="helper">How do you prefer to teach and guide students?</div>
             </div>
 
             <div class="form-group">
@@ -4288,8 +4392,6 @@
                 <div class="helper">Providing credentials helps our team verify you as a scholar.</div>
             </div>
 
-
-
             <div class="modal-actions">
                 <button class="btn-primary" id="mentorSubmitBtn">
                     <span class="btn-shimmer"></span>
@@ -4303,18 +4405,71 @@
 
     <!-- ========== EDIT PROFILE MODAL ========== -->
     <div class="mentor-modal-overlay" id="editProfileModalOverlay">
-        <div class="mentor-modal">
+        <div class="mentor-modal" style="max-width: 600px;">
             <h2>✎ Edit Profile</h2>
-            <p class="modal-sub">Update your name and location.</p>
+            <p class="modal-sub">Update your personal information, interests, and conversion details.</p>
 
             <div class="form-group">
                 <label>Full Name</label>
-                <input type="text" id="editProfileName" class="form-input" placeholder="Your full name" style="width:100%;padding:10px 14px;border:1px solid var(--border-medium);border-radius:var(--radius-sm);background:var(--input-bg);color:var(--text-primary);outline:none;">
+                <input type="text" id="editProfileName" placeholder="Your full name" style="width:100%;padding:10px 14px;border:1px solid var(--border-medium);border-radius:var(--radius-sm);background:var(--input-bg);color:var(--text-primary);outline:none;">
             </div>
 
             <div class="form-group">
                 <label>Location</label>
-                <input type="text" id="editProfileLocation" class="form-input" placeholder="e.g., Chicago, IL" style="width:100%;padding:10px 14px;border:1px solid var(--border-medium);border-radius:var(--radius-sm);background:var(--input-bg);color:var(--text-primary);outline:none;">
+                <input type="text" id="editProfileLocation" placeholder="e.g., Chicago, IL" style="width:100%;padding:10px 14px;border:1px solid var(--border-medium);border-radius:var(--radius-sm);background:var(--input-bg);color:var(--text-primary);outline:none;">
+            </div>
+
+            <div class="form-group">
+                <label>Your Interests <span style="font-weight:400;color:var(--gray-400)">(select all that apply)</span></label>
+                <div class="checkbox-grid" id="editInterestsGroup" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:4px;">
+                    <div class="checkbox-option" style="flex:1 1 calc(50% - 8px);min-width:120px;padding:8px 12px;font-size:13px;"><i class="fas fa-check-circle"></i> Finding a Mentor</div>
+                    <div class="checkbox-option" style="flex:1 1 calc(50% - 8px);min-width:120px;padding:8px 12px;font-size:13px;"><i class="fas fa-check-circle"></i> New Muslim Support</div>
+                    <div class="checkbox-option" style="flex:1 1 calc(50% - 8px);min-width:120px;padding:8px 12px;font-size:13px;"><i class="fas fa-check-circle"></i> Prayer Guidance</div>
+                    <div class="checkbox-option" style="flex:1 1 calc(50% - 8px);min-width:120px;padding:8px 12px;font-size:13px;"><i class="fas fa-check-circle"></i> Quran Study</div>
+                    <div class="checkbox-option" style="flex:1 1 calc(50% - 8px);min-width:120px;padding:8px 12px;font-size:13px;"><i class="fas fa-check-circle"></i> Arabic Learning</div>
+                    <div class="checkbox-option" style="flex:1 1 calc(50% - 8px);min-width:120px;padding:8px 12px;font-size:13px;"><i class="fas fa-check-circle"></i> Local Mosque Events</div>
+                    <div class="checkbox-option" style="flex:1 1 calc(50% - 8px);min-width:120px;padding:8px 12px;font-size:13px;"><i class="fas fa-check-circle"></i> Building Friendships</div>
+                    <div class="checkbox-option" style="flex:1 1 calc(50% - 8px);min-width:120px;padding:8px 12px;font-size:13px;"><i class="fas fa-check-circle"></i> Family &amp; Shahada</div>
+                    <div class="checkbox-option" style="flex:1 1 calc(50% - 8px);min-width:120px;padding:8px 12px;font-size:13px;"><i class="fas fa-check-circle"></i> Islamic History</div>
+                    <div class="checkbox-option" style="flex:1 1 calc(50% - 8px);min-width:120px;padding:8px 12px;font-size:13px;"><i class="fas fa-check-circle"></i> Mental Wellness</div>
+                    <div class="checkbox-option" style="flex:1 1 calc(50% - 8px);min-width:120px;padding:8px 12px;font-size:13px;"><i class="fas fa-check-circle"></i> Community Service</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Are you a convert to Islam?</label>
+                <select id="editConvertStatus">
+                    <option value="">-- Select --</option>
+                    <option value="yes">Yes, I converted to Islam</option>
+                    <option value="no">No, I was born Muslim</option>
+                    <option value="prefer-not">Prefer not to say</option>
+                </select>
+            </div>
+
+            <div id="editConvertDetailsGroup" style="display:none;">
+                <div class="form-group">
+                    <label>Previous Religion (if applicable)</label>
+                    <select id="editPreviousReligion">
+                        <option value="">-- Select --</option>
+                        <option value="christianity">Christianity</option>
+                        <option value="judaism">Judaism</option>
+                        <option value="hinduism">Hinduism</option>
+                        <option value="buddhism">Buddhism</option>
+                        <option value="sikhism">Sikhism</option>
+                        <option value="atheism">Atheism / Agnosticism</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Why did you convert to Islam?</label>
+                    <textarea id="editConvertReason" placeholder="Share your story (optional)..." rows="3" style="width:100%;padding:10px 14px;border:1px solid var(--border-medium);border-radius:var(--radius-sm);background:var(--input-bg);color:var(--text-primary);outline:none;font-family:'Inter',sans-serif;resize:vertical;"></textarea>
+                    <div class="helper">This helps the community support you better. Your story may inspire others.</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>About Me <span style="font-weight:400;color:var(--gray-400)">(optional)</span></label>
+                <textarea id="editAboutMe" placeholder="Tell the community a little about yourself..." rows="3" style="width:100%;padding:10px 14px;border:1px solid var(--border-medium);border-radius:var(--radius-sm);background:var(--input-bg);color:var(--text-primary);outline:none;font-family:'Inter',sans-serif;resize:vertical;"></textarea>
             </div>
 
             <div class="modal-actions">
@@ -4439,6 +4594,38 @@
                     </div>
                 </div>
 
+                <!-- NEW: Convert Details Section -->
+                <div class="form-group">
+                    <label>Are you a convert to Islam?</label>
+                    <select id="regConvertStatus">
+                        <option value="">-- Select --</option>
+                        <option value="yes">Yes, I converted to Islam</option>
+                        <option value="no">No, I was born Muslim</option>
+                        <option value="prefer-not">Prefer not to say</option>
+                    </select>
+                </div>
+
+                <div id="regConvertDetails" style="display:none; margin-top: 12px;">
+                    <div class="form-group">
+                        <label>What religion did you previously follow?</label>
+                        <select id="regPreviousReligion">
+                            <option value="">-- Select --</option>
+                            <option value="christianity">Christianity</option>
+                            <option value="judaism">Judaism</option>
+                            <option value="hinduism">Hinduism</option>
+                            <option value="buddhism">Buddhism</option>
+                            <option value="sikhism">Sikhism</option>
+                            <option value="atheism">Atheism / Agnosticism</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Why did you convert to Islam?</label>
+                        <textarea id="regConvertReason" placeholder="Share your story (optional)..." rows="3" style="width:100%;padding:10px 14px;border:1px solid var(--border-medium);border-radius:var(--radius-sm);background:var(--input-bg);color:var(--text-primary);outline:none;font-family:'Inter',sans-serif;resize:vertical;"></textarea>
+                        <div class="helper">Your story may inspire others on their journey.</div>
+                    </div>
+                </div>
+
                 <button type="button" class="btn-primary" id="onboardingFinish">
                     <span class="btn-shimmer"></span>
                     <span>Continue</span>
@@ -4548,7 +4735,6 @@
                 </div>
                 <div class="topbar-right">
 
-
                     <!-- Bell -->
                     <div style="position:relative;">
                         <button class="icon-btn" id="bellBtn" title="Notifications">
@@ -4631,7 +4817,7 @@
                     <div class="dash-grid">
                         <!-- LEFT COLUMN -->
                         <div style="display:flex; flex-direction:column; gap:20px;">
-                            <!-- ACTIVE MENTOR COMPONENT (From previous step) -->
+                            <!-- ACTIVE MENTOR COMPONENT -->
                             <div class="dash-card" id="dashMentorCardPlaceholder">
                                 <div class="card-header">
                                     <h3>⭐ Your Active Mentor</h3>
@@ -5325,7 +5511,7 @@
                             <i class="fas fa-info-circle"></i> About Silah
                         </div>
                         <div class="settings-about">
-                            <strong>Silah</strong> v1.4.0 · AI-Powered Community Platform<br />
+                            <strong>Silah</strong> v2.0.0 · AI-Powered Community Platform<br />
                             Built with ❤️ for the global Muslim community.<br />
                             <span style="font-size:11px;color:var(--gray-400);">© 2026 Silah Foundation · All rights reserved.</span>
                         </div>
@@ -5412,9 +5598,6 @@
         // ============================================================
         // ========== AI MODERATION CONFIGURATION ==========
         // ============================================================
-        // The OpenAI API key lives server-side only (server.js reads it from
-        // process.env.OPENAI_API_KEY). The client just calls our own
-        // /api/moderate endpoint, same pattern as the mosque proxy below.
         const MODERATION_ENDPOINT = '/api/moderate';
         const AI_CHAT_ENDPOINT = '/api/chat';
 
@@ -5523,7 +5706,6 @@
                     const timings = adhanData.data.timings;
                     const hijri = adhanData.data.date.hijri;
                     
-                    // Format and render Date
                     const hijriEl = document.getElementById('hijriDateDisplay');
                     if (hijriEl) hijriEl.textContent = `${hijri.month.en} ${hijri.day}, ${hijri.year} AH`;
                     
@@ -5538,7 +5720,6 @@
                     const savedState = JSON.parse(localStorage.getItem(`silah_prayers_${todayStr}`)) || {};
                     const grid = document.getElementById('prayerTrackerGrid');
                     
-                    // Render the grid
                     if (grid) {
                         grid.innerHTML = prayers.map(p => `
                             <div class="prayer-box ${savedState[p.id] ? 'completed' : ''}" data-prayer="${p.id}">
@@ -5550,7 +5731,6 @@
                         
                         updatePrayerProgress(todayStr);
                         
-                        // Reactive event listeners for checkboxes
                         grid.querySelectorAll('.prayer-box').forEach(box => {
                             box.addEventListener('click', function() {
                                 this.classList.toggle('completed');
@@ -5587,7 +5767,6 @@
                     const inspData = await inspRes.json();
                     
                     if (inspData) {
-                        // Parse Name of Allah
                         if (typeof inspData.name === 'string') {
                             const lines = inspData.name.split('\n\n');
                             const firstLine = lines[0] || '';
@@ -5607,7 +5786,6 @@
                             }
                         }
 
-                        // Parse Hadith / Reflection
                         if (typeof inspData.hadith === 'string') {
                             const lines = inspData.hadith.split('\n\n');
                             const header = lines[0] || '';
@@ -5626,7 +5804,6 @@
                     console.warn('API fetch warning, using fallback inspiration:', e);
                 }
 
-                // Render Name of Allah Card
                 if (allahContainer) {
                     allahContainer.innerHTML = `
                         <div class="name-of-allah" style="border:none; margin:0; padding:0;">
@@ -5638,7 +5815,6 @@
                     `;
                 }
 
-                // Render Hadith Card
                 if (hadithContainer) {
                     hadithContainer.innerHTML = `
                         <div class="daily-hadith-box" style="max-height: 260px; overflow-y: auto; padding-right: 6px;">
@@ -5652,7 +5828,6 @@
             }
         }
 
-        // Helper: Calculate streak progress bar
         function updatePrayerProgress(dateStr) {
             const state = JSON.parse(localStorage.getItem(`silah_prayers_${dateStr}`)) || {};
             const completed = Object.values(state).filter(Boolean).length;
@@ -5667,7 +5842,6 @@
             if (barEl) barEl.style.width = `${pct}%`;
         }
 
-        // Helper: Convert 24hr API string to 12hr format
         function formatTime(time24) {
             if (!time24) return '';
             const [h, m] = time24.split(':');
@@ -5708,39 +5882,9 @@
             const toast = document.createElement('div');
             toast.className = 'mini-toast';
             toast.textContent = message;
-            toast.style.cssText = `
-                        position: fixed;
-                        bottom: 24px;
-                        left: 50%;
-                        transform: translateX(-50%);
-                        background: var(--green);
-                        color: #fff;
-                        padding: 10px 24px;
-                        border-radius: 30px;
-                        font-size: 14px;
-                        font-weight: 600;
-                        font-family: 'Inter', sans-serif;
-                        z-index: 9999;
-                        box-shadow: 0 8px 24px rgba(0,0,0,0.3);
-                        animation: fadeUpToast 0.4s ease, fadeDownToast 0.4s ease 1.6s forwards;
-                        pointer-events: none;
-                    `;
             document.body.appendChild(toast);
             setTimeout(() => { if (toast.parentNode) toast.remove(); }, 2200);
         }
-
-        const toastStyle = document.createElement('style');
-        toastStyle.textContent = `
-                    @keyframes fadeUpToast {
-                        from { opacity: 0; transform: translateX(-50%) translateY(20px); }
-                        to { opacity: 1; transform: translateX(-50%) translateY(0); }
-                    }
-                    @keyframes fadeDownToast {
-                        from { opacity: 1; transform: translateX(-50%) translateY(0); }
-                        to { opacity: 0; transform: translateX(-50%) translateY(20px); }
-                    }
-                `;
-        document.head.appendChild(toastStyle);
 
         function loadDarkModePreference() {
             const saved = localStorage.getItem('silah-dark-mode');
@@ -5848,10 +5992,12 @@
             });
         });
 
-        document.querySelectorAll('.checkbox-option').forEach(opt => {
-            opt.addEventListener('click', function() {
-                this.classList.toggle('selected');
-            });
+        // Global handler for all checkbox-option selections (registration & edit profile)
+        document.addEventListener('click', function(e) {
+            const opt = e.target.closest('.checkbox-option');
+            if (opt) {
+                opt.classList.toggle('selected');
+            }
         });
 
         document.querySelectorAll('.disco-tabs .tab').forEach(tab => {
@@ -5901,7 +6047,6 @@
             });
         });
 
-        // RSVP buttons on events (Discover and Community)
         document.querySelectorAll('.btn-rsvp').forEach(btn => {
             btn.addEventListener('click', function(e) {
                 e.stopPropagation();
@@ -6034,7 +6179,7 @@
 
                 // 1. Mentorship Requests received (for mentors)
                 const { data: pendingReqs } = await sb
-                    .from('mentorship_requests')
+                    .from('mentor_requests')
                     .select('id, created_at, mentee:mentee_id (full_name)')
                     .eq('mentor_id', currentUser.id)
                     .eq('status', 'pending');
@@ -6055,7 +6200,7 @@
 
                 // 2. Mentorship Requests accepted (for mentees)
                 const { data: acceptedReqs } = await sb
-                    .from('mentorship_requests')
+                    .from('mentor_requests')
                     .select('id, updated_at, mentors:mentor_id (full_name)')
                     .eq('mentee_id', currentUser.id)
                     .eq('status', 'accepted');
@@ -6125,6 +6270,20 @@
                     }
                 }
 
+                // 5. Community Join notifications
+                if (userCommunityMemberships && userCommunityMemberships.length > 0) {
+                    userCommunityMemberships.forEach(m => {
+                        notifications.push({
+                            id: `join_${m.mosque_id}`,
+                            icon: 'fa-users',
+                            iconColor: 'var(--teal)',
+                            text: `You joined <strong>${m.mosque_name}</strong> community!`,
+                            time: m.joined_at || new Date().toISOString(),
+                            action: () => navigateTo('community')
+                        });
+                    });
+                }
+
                 // Sort by time descending
                 notifications.sort((a, b) => new Date(b.time || 0) - new Date(a.time || 0));
 
@@ -6163,7 +6322,6 @@
                     }
                 }
 
-                // Click notification action
                 notifList.querySelectorAll('.notif-item').forEach(item => {
                     item.addEventListener('click', function() {
                         const notifId = this.dataset.notifId;
@@ -6208,7 +6366,6 @@
             }
         }
 
-        // Notification bell toggle & auto fetch
         const bellBtn = document.getElementById('bellBtn');
         const notificationPopup = document.getElementById('notificationPopup');
         const notifBadge = document.getElementById('notifBadge');
@@ -6240,7 +6397,6 @@
             if (notifBadge) notifBadge.style.display = 'none';
         });
 
-        // Periodic notification polling
         setInterval(() => {
             if (currentUser) loadRealNotifications();
         }, 30000);
@@ -6272,7 +6428,7 @@
                     console.warn('Moderation server error:', error);
                     return null;
                 }
-                return await response.json(); // { approved, reason }
+                return await response.json();
             } catch (error) {
                 console.warn('Moderation request failed:', error);
                 return null;
@@ -6292,8 +6448,6 @@
                 return result;
             }
 
-            // Moderation service unreachable/misconfigured — fail closed so
-            // unmoderated content is never silently allowed through.
             return {
                 approved: false,
                 reason: 'Unable to verify content right now. Please try again in a moment.'
@@ -6325,6 +6479,27 @@
         const editProfileSaveBtn = document.getElementById('editProfileSaveBtn');
         const editProfileNameInput = document.getElementById('editProfileName');
         const editProfileLocationInput = document.getElementById('editProfileLocation');
+        const editInterestsGroup = document.getElementById('editInterestsGroup');
+        const editConvertStatus = document.getElementById('editConvertStatus');
+        const editConvertDetailsGroup = document.getElementById('editConvertDetailsGroup');
+        const editPreviousReligion = document.getElementById('editPreviousReligion');
+        const editConvertReason = document.getElementById('editConvertReason');
+        const editAboutMe = document.getElementById('editAboutMe');
+
+        // Toggle convert details visibility in edit modal
+        editConvertStatus?.addEventListener('change', function() {
+            if (editConvertDetailsGroup) {
+                editConvertDetailsGroup.style.display = this.value === 'yes' ? 'block' : 'none';
+            }
+        });
+
+        // Toggle convert details visibility in registration
+        document.getElementById('regConvertStatus')?.addEventListener('change', function() {
+            const details = document.getElementById('regConvertDetails');
+            if (details) {
+                details.style.display = this.value === 'yes' ? 'block' : 'none';
+            }
+        });
 
         ppEditProfileBtn?.addEventListener('click', function() {
             if (!currentUser) {
@@ -6332,8 +6507,34 @@
                 return;
             }
             profilePopup?.classList.remove('show');
+            
+            // Populate fields
             editProfileNameInput.value = currentProfile?.full_name || '';
             editProfileLocationInput.value = currentProfile?.location || '';
+            editAboutMe.value = currentProfile?.about_me || '';
+            
+            // Populate interests
+            const interests = currentProfile?.interests || [];
+            if (editInterestsGroup) {
+                editInterestsGroup.querySelectorAll('.checkbox-option').forEach(opt => {
+                    const text = opt.textContent.trim();
+                    const isSelected = interests.some(i => text.includes(i) || i.includes(text));
+                    opt.classList.toggle('selected', isSelected);
+                });
+            }
+            
+            // Populate convert details
+            const isConvert = currentProfile?.is_convert || false;
+            const prevReligion = currentProfile?.previous_religion || '';
+            const convertReason = currentProfile?.convert_reason || '';
+            
+            if (editConvertStatus) {
+                editConvertStatus.value = isConvert ? 'yes' : (currentProfile?.convert_status || '');
+                editConvertStatus.dispatchEvent(new Event('change'));
+            }
+            if (editPreviousReligion) editPreviousReligion.value = prevReligion;
+            if (editConvertReason) editConvertReason.value = convertReason;
+            
             editProfileModalOverlay.classList.add('show');
             document.body.style.overflow = 'hidden';
         });
@@ -6358,6 +6559,18 @@
 
             const name = editProfileNameInput.value.trim();
             const location = editProfileLocationInput.value.trim();
+            const aboutMe = editAboutMe.value.trim();
+
+            const interests = [];
+            if (editInterestsGroup) {
+                editInterestsGroup.querySelectorAll('.checkbox-option.selected').forEach(opt => {
+                    interests.push(opt.textContent.trim());
+                });
+            }
+
+            const isConvert = editConvertStatus?.value === 'yes';
+            const previousReligion = editPreviousReligion?.value || '';
+            const convertReason = editConvertReason?.value.trim() || '';
 
             if (!name) {
                 showModerationToast('Please enter your name.', 'warning');
@@ -6370,23 +6583,58 @@
             btn.innerHTML = 'Saving…';
 
             try {
-                const { error } = await sb.from('profiles').upsert({
+                const fullData = {
                     id: currentUser.id,
                     full_name: name,
+                    location: location || '',
+                    about_me: aboutMe || ''
+                };
+
+                if (interests.length) fullData.interests = interests;
+                if (isConvert !== undefined) fullData.is_convert = isConvert;
+                if (previousReligion) fullData.previous_religion = previousReligion;
+                if (convertReason) fullData.convert_reason = convertReason;
+                if (editConvertStatus?.value) fullData.convert_status = editConvertStatus.value;
+
+                let { error } = await sb.from('profiles').upsert(fullData);
+
+                // If error mentions missing columns, strip optional fields and retry with core fields (id, full_name, location)
+                if (error && (error.message?.includes('column') || error.code === 'PGRST204' || error.message?.includes('PGRST204'))) {
+                    console.warn('Retrying profile update with core fields due to missing columns:', error.message);
+                    const minimalData = {
+                        id: currentUser.id,
+                        full_name: name,
+                        location: location || ''
+                    };
+                    const retryRes = await sb.from('profiles').upsert(minimalData);
+                    error = retryRes.error;
+                }
+
+                if (error) {
+                    console.error('Supabase profile update error details:', error);
+                    throw error;
+                }
+
+                const updatedProfile = { 
+                    ...(currentProfile || {}), 
+                    full_name: name, 
                     location: location,
-                });
-
-                if (error) throw error;
-
-                const updatedProfile = { ...(currentProfile || {}), full_name: name, location: location };
+                    interests: interests,
+                    about_me: aboutMe,
+                    is_convert: isConvert,
+                    previous_religion: previousReligion,
+                    convert_reason: convertReason
+                };
                 applyProfileToUI(updatedProfile, currentUser.email);
+                currentProfile = updatedProfile;
 
                 editProfileModalOverlay.classList.remove('show');
                 document.body.style.overflow = '';
                 showModerationToast('✅ Profile updated!', 'success');
             } catch (error) {
                 console.error('Error updating profile:', error);
-                showModerationToast('Failed to update profile. Please try again.', 'error');
+                const errMsg = error.message || error.error_description || JSON.stringify(error);
+                showModerationToast(`Failed to update profile: ${errMsg}`, 'error', 6000);
             } finally {
                 btn.disabled = false;
                 btn.innerHTML = origLabel;
@@ -6416,17 +6664,11 @@
             const nameEl = document.getElementById('greetingName');
             const dashEl = document.getElementById('dashName');
             const avatarEl = document.getElementById('topbarAvatar');
-            const profAvatarEl = document.getElementById('profileAvatar');
-            const profNameEl = document.getElementById('profileName');
-            const profLocEl = document.getElementById('profileLoc');
             const feedAvatar = document.getElementById('feedUserAvatar');
 
             if (nameEl) nameEl.textContent = firstName;
             if (dashEl) dashEl.textContent = firstName;
             if (avatarEl) avatarEl.textContent = initials;
-            if (profAvatarEl) profAvatarEl.textContent = initials;
-            if (profNameEl) profNameEl.textContent = name;
-            if (profLocEl && profile.location) profLocEl.textContent = profile.location;
             if (feedAvatar) feedAvatar.textContent = initials;
             updateProfilePopup(name, email || 'No email', profile.location || null);
             currentProfile = profile;
@@ -6482,7 +6724,6 @@
 
         let pendingUserId = null;
 
-        // Sign In
         async function handleSignIn() {
             const email = document.getElementById('signInEmail')?.value.trim() || '';
             const password = document.getElementById('signInPassword')?.value || '';
@@ -6521,7 +6762,6 @@
             }
         });
 
-        // Register
         async function handleRegisterContinue() {
             const name = document.getElementById('regName')?.value.trim() || '';
             const email = document.getElementById('regEmail')?.value.trim() || '';
@@ -6555,7 +6795,6 @@
             }
         });
 
-        // Onboarding Finish
         document.getElementById('onboardingFinish')?.addEventListener('click', async function() {
             const name = window.__pendingName || 'Friend';
             const email = window.__pendingEmail || '';
@@ -6569,6 +6808,12 @@
                 interests.push(el.textContent.trim());
             });
 
+            // New convert details
+            const convertStatus = document.getElementById('regConvertStatus')?.value || '';
+            const isConvert = convertStatus === 'yes';
+            const previousReligion = document.getElementById('regPreviousReligion')?.value || '';
+            const convertReason = document.getElementById('regConvertReason')?.value.trim() || '';
+
             const btn = this;
             const origLabel = btn.innerHTML;
             btn.disabled = true;
@@ -6580,6 +6825,10 @@
                 location: locationText,
                 purpose: purpose,
                 interests: interests,
+                is_convert: isConvert,
+                previous_religion: previousReligion,
+                convert_reason: convertReason,
+                convert_status: convertStatus
             });
 
             btn.disabled = false;
@@ -6592,7 +6841,7 @@
                 return;
             }
 
-            const profile = { full_name: name, location: locationText };
+            const profile = { full_name: name, location: locationText, interests, is_convert: isConvert, previous_religion: previousReligion, convert_reason: convertReason };
             applyProfileToUI(profile, email);
             currentProfile = profile;
 
@@ -6607,7 +6856,6 @@
             }
         });
 
-        // Log Out
         function performLogout() {
             sb.auth.signOut().then(() => {
                 document.body.classList.remove('authenticated');
@@ -6627,7 +6875,6 @@
         document.getElementById('settingsLogoutBtn')?.addEventListener('click', performLogout);
         ppLogoutBtn?.addEventListener('click', performLogout);
 
-        // Auto sign-in
         (async function restoreSession() {
             const { data } = await sb.auth.getSession();
             if (data.session) {
@@ -6672,7 +6919,6 @@
                 if (error) throw error;
                 userCommunityMemberships = data || [];
                 
-                // Identify Primary Mosque Membership
                 primaryMembership = userCommunityMemberships.find(m => m.is_primary) || userCommunityMemberships[0] || null;
 
                 updateCommunityHeader();
@@ -6805,7 +7051,6 @@
             await joinCommunity(name, name, address);
         });
 
-        // Community tab switching
         document.querySelectorAll('.community-tabs .community-tab').forEach(function(tabBtn) {
             tabBtn.addEventListener('click', function() {
                 const target = tabBtn.dataset.tab;
@@ -6821,7 +7066,6 @@
             });
         });
 
-        // Step 1: Join Mosque and set primary
         async function joinCommunity(mosqueId, mosqueName, mosqueAddress, lat = null, lon = null) {
             if (!currentUser) {
                 showModerationToast('Please sign in to join a community.', 'warning');
@@ -6831,7 +7075,6 @@
             const cleanMosqueId = mosqueId || mosqueName.replace(/\s+/g, '_').toLowerCase();
 
             try {
-                // Remove previous primary status
                 await sb
                     .from('community_memberships')
                     .update({ is_primary: false })
@@ -6856,7 +7099,8 @@
                             mosque_address: mosqueAddress || '',
                             mosque_lat: lat || null,
                             mosque_lon: lon || null,
-                            is_primary: true
+                            is_primary: true,
+                            joined_at: new Date().toISOString()
                         });
                     if (insertErr) throw insertErr;
                 }
@@ -6865,6 +7109,7 @@
                 showModerationToast(`🎉 Set ${mosqueName} as your primary mosque community!`, 'success');
                 loadCommunityContent();
                 populateMosqueSelect();
+                loadRealNotifications(); // Trigger notification refresh
             } catch (error) {
                 console.error('Error joining community:', error);
                 showModerationToast('Failed to join community. Please try again.', 'error');
@@ -6893,7 +7138,6 @@
             }
         }
 
-        // Step 2 & 8: Load Community Content for primary mosque
         async function loadCommunityContent() {
             if (!primaryMembership) {
                 renderNoPrimaryCommunityState();
@@ -6922,7 +7166,6 @@
             });
         }
 
-        // Step 3, 4, 5: Load Everyone in the Same Mosque (Members, Imams, Converts)
         async function loadMosquePeople() {
             const membersPanel = document.getElementById('communityMembersPanel');
             const imamsPanel = document.getElementById('communityImamsPanel');
@@ -6931,15 +7174,14 @@
             if (!primaryMembership) return;
 
             try {
-                // Step 3: Query everyone in the same mosque (matching by mosque_id or mosque_name)
+                // 1. Fetch community members for the mosque
                 const { data: members, error } = await sb
                     .from('community_memberships')
                     .select(`
                         user_id,
                         mosque_id,
                         mosque_name,
-                        profiles:user_id (full_name, location),
-                        community_profiles:user_id (about_me, occupation, education, is_imam, is_convert, show_in_community, convert_date)
+                        profiles:user_id (id, full_name, location, purpose, interests, is_convert, previous_religion, convert_reason, about_me, convert_status)
                     `)
                     .or(`mosque_id.eq."${primaryMembership.mosque_id}",mosque_name.eq."${primaryMembership.mosque_name}"`);
 
@@ -6953,85 +7195,146 @@
                     
                     if (mRows && mRows.length) {
                         const uIds = mRows.map(m => m.user_id);
-                        const [{ data: pData }, { data: cpData }] = await Promise.all([
-                            sb.from('profiles').select('id, full_name, location').in('id', uIds),
-                            sb.from('community_profiles').select('*').in('id', uIds)
-                        ]);
-                        const pMap = {}, cpMap = {};
+                        const { data: pData } = await sb.from('profiles').select('*').in('id', uIds);
+                        const pMap = {};
                         (pData || []).forEach(p => pMap[p.id] = p);
-                        (cpData || []).forEach(cp => cpMap[cp.id] = cp);
 
                         memberRows = mRows.map(m => ({
                             user_id: m.user_id,
-                            profiles: pMap[m.user_id] || {},
-                            community_profiles: cpMap[m.user_id] || {}
+                            profiles: pMap[m.user_id] || {}
                         }));
                     }
                 }
 
-                console.log(`[Silah Community] Members fetched for ${primaryMembership.mosque_name}:`, memberRows);
-
-                // Step 4: Hide users who don't want to appear
-                const visibleMembers = memberRows.filter(m => {
-                    const cp = Array.isArray(m.community_profiles) ? m.community_profiles[0] : m.community_profiles;
-                    return cp ? cp.show_in_community !== false : true;
+                // 2. Fetch certified mentors / scholars from database
+                const { data: dbMentors } = await sb.from('mentors').select('*');
+                const mentorMap = {};
+                (dbMentors || []).forEach(m => {
+                    mentorMap[m.user_id || m.id] = m;
                 });
 
-                // Step 5: Separate members into sections
-                const imams = visibleMembers.filter(m => {
-                    const cp = Array.isArray(m.community_profiles) ? m.community_profiles[0] : m.community_profiles;
-                    return cp && cp.is_imam;
+                // Separate current user and other members
+                const otherMembers = memberRows.filter(m => {
+                    const prof = Array.isArray(m.profiles) ? m.profiles[0] : m.profiles || {};
+                    return (prof.id || m.user_id) !== currentUser?.id;
                 });
 
-                const converts = visibleMembers.filter(m => {
-                    const cp = Array.isArray(m.community_profiles) ? m.community_profiles[0] : m.community_profiles;
-                    return cp && cp.is_convert;
+                const currentUserRow = memberRows.find(m => {
+                    const prof = Array.isArray(m.profiles) ? m.profiles[0] : m.profiles || {};
+                    return (prof.id || m.user_id) === currentUser?.id;
                 });
 
-                const regularMembers = visibleMembers.filter(m => {
-                    const cp = Array.isArray(m.community_profiles) ? m.community_profiles[0] : m.community_profiles;
-                    return !cp || (!cp.is_imam && !cp.is_convert);
+                // 3. Imams & Certified Scholars list
+                const communityImams = (dbMentors || []).filter(m => m.verified || m.credentials || m.expertise);
+
+                // 4. Converts & Seekers list based on purpose ('seeking', 'convert', 'learn') and is_convert
+                const convertsAndSeekers = memberRows.filter(m => {
+                    const prof = Array.isArray(m.profiles) ? m.profiles[0] : m.profiles || {};
+                    const isConv = prof.is_convert === true || prof.convert_status === 'yes';
+                    const isSeeker = prof.purpose && (prof.purpose.toLowerCase().includes('seeking') || prof.purpose.toLowerCase().includes('convert') || prof.purpose.toLowerCase().includes('learn'));
+                    return isConv || isSeeker;
                 });
 
-                // Render Regular Members Panel
+                console.log(`[Silah Community] Loaded for ${primaryMembership.mosque_name}:`, { memberRows, communityImams, convertsAndSeekers });
+
+                // Render Members Panel
                 if (membersPanel) {
-                    if (regularMembers.length === 0) {
-                        membersPanel.innerHTML = `
-                            <div style="text-align:center;padding:30px;color:var(--text-secondary);">
+                    let html = '';
+                    if (currentUserRow) {
+                        const prof = Array.isArray(currentUserRow.profiles) ? currentUserRow.profiles[0] : currentUserRow.profiles || {};
+                        const name = prof.full_name || 'You';
+                        const initials = getInitials(name);
+                        const interests = prof.interests || [];
+                        const isConvert = prof.is_convert === true || prof.convert_status === 'yes';
+                        const isSeeker = prof.purpose && prof.purpose.toLowerCase().includes('seeking');
+                        const convertInfo = isConvert ? `🔄 Convert from ${prof.previous_religion || 'unknown'}` : (isSeeker ? '🔍 Seeking Guidance' : '');
+
+                        html += `
+                            <div class="community-profile-card" style="border: 2px solid var(--gold); background: var(--gold-pale);">
+                                <div class="cp-avatar" style="background: var(--gold-light); color: #fff;">${initials}</div>
+                                <div class="cp-info">
+                                    <div class="cp-name">${name} <span class="cp-badge member" style="background:var(--gold);color:#fff;">⭐ You</span></div>
+                                    <div class="cp-detail">📍 ${prof.location || 'Location not set'}</div>
+                                    ${convertInfo ? `<div class="cp-detail" style="color:var(--gold);">${convertInfo}</div>` : ''}
+                                    ${interests.length ? `<div class="cp-detail">${interests.map(i => `<span class="interests-tag"><i class="fas fa-tag"></i> ${i}</span>`).join('')}</div>` : ''}
+                                    ${prof.about_me ? `<div class="cp-detail">${prof.about_me}</div>` : ''}
+                                </div>
+                            </div>
+                        `;
+                    }
+
+                    if (otherMembers.length === 0 && !currentUserRow) {
+                        html += `
+                            <div style="text-align:center;padding:20px;color:var(--text-secondary);">
                                 <i class="fas fa-users" style="font-size:32px;color:var(--gray-300);display:block;margin-bottom:10px;"></i>
-                                <p>No members listed yet for ${primaryMembership.mosque_name}.</p>
+                                <p>No members in ${primaryMembership.mosque_name} yet.</p>
                             </div>
                         `;
                     } else {
-                        membersPanel.innerHTML = regularMembers.map(m => renderUserCard(m, 'Member')).join('');
+                        html += otherMembers.map(m => {
+                            const prof = Array.isArray(m.profiles) ? m.profiles[0] : m.profiles || {};
+                            const isConv = prof.is_convert === true || prof.convert_status === 'yes';
+                            const isSeeker = prof.purpose && prof.purpose.toLowerCase().includes('seeking');
+                            const isScholar = mentorMap[m.user_id] && mentorMap[m.user_id].verified;
+                            
+                            let badgeLabel = 'Member';
+                            let badgeClass = 'member';
+                            if (isScholar) { badgeLabel = '🎓 Scholar'; badgeClass = 'imam'; }
+                            else if (isConv) { badgeLabel = '🔄 New Convert'; badgeClass = 'convert'; }
+                            else if (isSeeker) { badgeLabel = '🔍 Seeking Guidance'; badgeClass = 'convert'; }
+
+                            return renderUserCard(m, badgeLabel, badgeClass);
+                        }).join('');
                     }
+                    membersPanel.innerHTML = html;
                 }
 
-                // Render Imams Panel
+                // Render Imams & Scholars Panel
                 if (imamsPanel) {
-                    if (imams.length === 0) {
+                    if (!communityImams || communityImams.length === 0) {
                         imamsPanel.innerHTML = `
                             <div style="text-align:center;padding:30px;color:var(--text-secondary);">
                                 <i class="fas fa-mosque" style="font-size:32px;color:var(--gray-300);display:block;margin-bottom:10px;"></i>
-                                <p>No imams registered for ${primaryMembership.mosque_name} yet.</p>
+                                <p>No verified imams or scholars listed for ${primaryMembership.mosque_name} yet.</p>
                             </div>
                         `;
                     } else {
-                        imamsPanel.innerHTML = imams.map(m => renderUserCard(m, 'Imam', 'imam')).join('');
+                        imamsPanel.innerHTML = communityImams.map(mentor => {
+                            const initials = getInitials(mentor.full_name);
+                            return `
+                                <div class="community-profile-card">
+                                    <div class="cp-avatar" style="background:var(--gold-pale);color:var(--gold);border:2px solid var(--gold);">${initials}</div>
+                                    <div class="cp-info">
+                                        <div class="cp-name">${mentor.full_name} <span class="cp-badge imam">🎓 Certified Scholar</span></div>
+                                        <div class="cp-detail" style="color:var(--gold);font-weight:600;">✨ ${mentor.expertise || 'Islamic Scholar'}</div>
+                                        ${mentor.bio ? `<div class="cp-detail">${mentor.bio}</div>` : ''}
+                                        ${mentor.credentials ? `<div class="cp-detail" style="font-size:12px;color:var(--text-secondary);">📜 ${mentor.credentials}</div>` : ''}
+                                    </div>
+                                    <div class="cp-actions">
+                                        <button class="cp-msg" onclick="openChat('${mentor.user_id || mentor.id}', '${mentor.full_name.replace(/'/g, "\\'")}')"><i class="fas fa-envelope"></i> Message</button>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('');
                     }
                 }
 
-                // Render Converts Panel
+                // Render New Converts & Seekers Panel
                 if (convertsPanel) {
-                    if (converts.length === 0) {
+                    if (convertsAndSeekers.length === 0) {
                         convertsPanel.innerHTML = `
                             <div style="text-align:center;padding:30px;color:var(--text-secondary);">
                                 <i class="fas fa-hand-holding-heart" style="font-size:32px;color:var(--gray-300);display:block;margin-bottom:10px;"></i>
-                                <p>No new converts registered for ${primaryMembership.mosque_name} yet.</p>
+                                <p>No new converts or seekers registered for ${primaryMembership.mosque_name} yet.</p>
                             </div>
                         `;
                     } else {
-                        convertsPanel.innerHTML = converts.map(m => renderUserCard(m, '🔄 New Convert', 'convert')).join('');
+                        convertsPanel.innerHTML = convertsAndSeekers.map(m => {
+                            const prof = Array.isArray(m.profiles) ? m.profiles[0] : m.profiles || {};
+                            const isConv = prof.is_convert === true || prof.convert_status === 'yes';
+                            const badge = isConv ? '🔄 New Convert' : '🔍 Seeking Guidance';
+                            return renderUserCard(m, badge, 'convert');
+                        }).join('');
                     }
                 }
 
@@ -7042,29 +7345,36 @@
 
         function renderUserCard(m, badgeLabel, badgeClass = 'member') {
             const prof = Array.isArray(m.profiles) ? m.profiles[0] : m.profiles || {};
-            const cp = Array.isArray(m.community_profiles) ? m.community_profiles[0] : m.community_profiles || {};
             const name = prof.full_name || 'Community Member';
             const initials = getInitials(name);
             const loc = prof.location || 'Location not set';
+            const interests = prof.interests || [];
+            const isConvert = prof.is_convert === true;
+            const convertInfo = isConvert ? `🔄 Convert from ${prof.previous_religion || 'unknown'}` : '';
+            const isCurrentUser = prof.id === currentUser?.id;
 
             return `
-                <div class="community-profile-card">
-                    <div class="cp-avatar">${initials}</div>
+                <div class="community-profile-card" ${isCurrentUser ? 'style="border:2px solid var(--gold);background:var(--gold-pale);"' : ''}>
+                    <div class="cp-avatar" ${isCurrentUser ? 'style="background:var(--gold-light);color:#fff;"' : ''}>${initials}</div>
                     <div class="cp-info">
-                        <div class="cp-name">${name} <span class="cp-badge ${badgeClass}">${badgeLabel}</span></div>
+                        <div class="cp-name">
+                            ${name} <span class="cp-badge ${badgeClass}">${badgeLabel}</span>
+                            ${isCurrentUser ? '<span class="cp-badge" style="background:var(--gold);color:#fff;">You</span>' : ''}
+                            ${isConvert ? '<span class="cp-badge convert">🔄 Convert</span>' : ''}
+                        </div>
                         <div class="cp-detail">📍 ${loc}</div>
-                        ${cp.about_me ? `<div class="cp-detail">${cp.about_me}</div>` : ''}
-                        ${cp.occupation ? `<div class="cp-detail">💼 ${cp.occupation}</div>` : ''}
-                        ${cp.education ? `<div class="cp-detail">🎓 ${cp.education}</div>` : ''}
+                        ${convertInfo ? `<div class="cp-detail" style="color:var(--gold);">${convertInfo}</div>` : ''}
+                        ${interests.length ? `<div class="cp-detail">${interests.map(i => `<span class="interests-tag"><i class="fas fa-tag"></i> ${i}</span>`).join('')}</div>` : ''}
+                        ${prof.about_me ? `<div class="cp-detail">${prof.about_me}</div>` : ''}
+                        ${prof.convert_reason ? `<div class="cp-detail" style="font-style:italic;color:var(--text-secondary);">"${prof.convert_reason}"</div>` : ''}
                     </div>
                     <div class="cp-actions">
-                        <button class="cp-msg" onclick="openChat('${m.user_id}', '${name.replace(/'/g, "\\'")}')"><i class="fas fa-envelope"></i> Message</button>
+                        ${!isCurrentUser ? `<button class="cp-msg" onclick="openChat('${prof.id}', '${name.replace(/'/g, "\\'")}')"><i class="fas fa-envelope"></i> Message</button>` : ''}
                     </div>
                 </div>
             `;
         }
 
-        // Step 6: Load Only Mosque Events
         async function loadMosqueEvents() {
             const panel = document.getElementById('communityEventsPanel');
             if (!panel || !primaryMembership) return;
@@ -7147,7 +7457,6 @@
             }
         }
 
-        // Step 7: Create Event Form & Automatic Mosque Attachment
         function attachCreateEventTrigger() {
             document.getElementById('openCreateEventBtn')?.addEventListener('click', function() {
                 if (!currentUser) return showModerationToast('Sign in to create an event.', 'warning');
@@ -7212,7 +7521,6 @@
             }
         });
 
-        // Load community mosques
         async function loadCommunityMosques() {
             const panel = document.getElementById('communityMosquesPanel');
             if (!panel) return;
@@ -7270,7 +7578,6 @@
                 locLabel.textContent = usedFallback ? '📍 Showing results near Germantown, MD' : '📍 Using your location';
             }
 
-            // Store all mosques for later use
             allMosquesData = mosques || [];
             localStorage.setItem('silah-all-mosques', JSON.stringify(allMosquesData));
 
@@ -7283,7 +7590,6 @@
             const dynamicRows = list.querySelectorAll('.mosque-row.dynamic');
             dynamicRows.forEach(row => row.remove());
 
-            // Check which mosques the user has already joined
             const joinedMosqueNames = userCommunityMemberships.map(m => m.mosque_name);
 
             mosques.forEach(m => {
@@ -7313,7 +7619,6 @@
                 `;
                 list.appendChild(row);
 
-                // Add join event listener
                 const joinBtn = row.querySelector('.mq-join-btn');
                 if (joinBtn && !joinBtn.classList.contains('joined')) {
                     joinBtn.addEventListener('click', function() {
@@ -7325,7 +7630,6 @@
             });
 
             updateMosqueMap('success', mosques, usedFallback, lat, lon);
-            // Populate the community join select
             populateMosqueSelect();
         }
 
@@ -7586,8 +7890,6 @@
                 }
                 
                 renderMyMentorProfile();
-                
-                // Execute the dashboard loaders
                 await loadPendingRequests();
                 await loadActiveMentees();
                 
@@ -7595,33 +7897,19 @@
                 console.warn('Error checking mentor status:', e);
             }
             
-            // Check if they are a mentee with an active connection
             await loadActiveMentor();
         }
 
         // ========== ACTIVE MENTEES LOGIC (FOR MENTORS) ==========
         async function loadActiveMentees() {
-            console.log('--- loadActiveMentees triggered ---');
-            console.log('Is User Registered Mentor?:', isMentorRegistered);
-
-            // Only run if the current user is a registered mentor
-            if (!currentUser || !isMentorRegistered || !currentUserMentorData) {
-                console.log('Exiting early: User is not recognized as a mentor.');
-                return;
-            }
+            if (!currentUser || !isMentorRegistered || !currentUserMentorData) return;
 
             const container = document.getElementById('activeMenteesContainer');
             const list = document.getElementById('activeMenteesList');
 
-            if (!container || !list) {
-                console.error('HTML Elements missing! Cannot render mentees.');
-                return;
-            }
+            if (!container || !list) return;
 
             try {
-                console.log('Fetching active mentees for mentor ID:', currentUserMentorData.id);
-                
-                // Fetch accepted requests where the user is the mentor
                 const { data: mentees, error } = await sb
                     .from('mentor_requests')
                     .select(`
@@ -7638,8 +7926,6 @@
                     .order('updated_at', { ascending: false });
 
                 if (error) throw error;
-                
-                console.log('Fetched Mentee Data:', mentees);
 
                 if (!mentees || mentees.length === 0) {
                     container.style.display = 'none';
@@ -7684,22 +7970,21 @@
             const list = document.getElementById('pendingRequestsList');
 
             try {
-                // Fetch pending requests specifically for this mentor
                 const { data: requests, error } = await sb
-                            .from('mentor_requests')
-                            .select(`
-                                id,
-                                status,
-                                created_at,
-                                mentee:profiles (
-                                    full_name,
-                                    location,
-                                    interests
-                                )
-                            `)
-                            .eq('mentor_id', currentUserMentorData.id)
-                            .eq('status', 'pending')
-                            .order('created_at', { ascending: false });
+                    .from('mentor_requests')
+                    .select(`
+                        id,
+                        status,
+                        created_at,
+                        mentee:profiles (
+                            full_name,
+                            location,
+                            interests
+                        )
+                    `)
+                    .eq('mentor_id', currentUserMentorData.id)
+                    .eq('status', 'pending')
+                    .order('created_at', { ascending: false });
 
                 if (error) throw error;
 
@@ -7734,7 +8019,6 @@
             }
         }
 
-        // Handle Accept/Decline
         window.handleRequestAction = async function(requestId, action) {
             const card = document.getElementById(`request-${requestId}`);
             if (card) card.style.opacity = '0.5';
@@ -7749,10 +8033,8 @@
 
                 showModerationToast(`Request ${action}.`, 'success', 2000);
                 
-                // Remove the card from the UI
                 if (card) card.remove();
                 
-                // Hide the container if no requests are left
                 if (document.getElementById('pendingRequestsList').children.length === 0) {
                     document.getElementById('pendingRequestsContainer').style.display = 'none';
                 }
@@ -7769,13 +8051,12 @@
             if (!currentUser) return;
 
             try {
-                // Fetch accepted requests where the user is the mentee
                 const { data: activeRequests, error } = await sb
                     .from('mentor_requests')
                     .select(`
                         id,
                         status,
-                        mentors (
+                        mentors:mentor_id (
                             id,
                             user_id,
                             full_name,
@@ -7792,14 +8073,9 @@
 
                 if (error) throw error;
 
-                // Container references
                 const activeContainer = document.getElementById('activeMentorshipContainer');
                 const activeCard = document.getElementById('activeMentorshipCard');
                 const dashMentorCard = document.getElementById('dashMentorCard');
-                
-                // Profile references
-                const profileMentorContainer = document.getElementById('profileActiveMentorContainer');
-                const profileMentorContent = document.getElementById('profileActiveMentorContent');
 
                 if (activeRequests && activeRequests.length > 0) {
                     const reqId = activeRequests[0].id;
@@ -7807,7 +8083,6 @@
                     const initials = mentor.avatar || getInitials(mentor.full_name);
                     const isScholar = mentor.verified;
                     
-                    // 1. Render in the Mentor Page
                     if (activeContainer && activeCard) {
                         activeContainer.style.display = 'block';
                         activeCard.innerHTML = `
@@ -7831,7 +8106,6 @@
                         `;
                     }
 
-                    // 2. Render in the Dashboard (Overrides the default recommendation)
                     if (dashMentorCard) {
                         dashMentorCard.innerHTML = `
                             <div class="mentor-avatar" style="color: var(--gold); background: var(--gold-pale); border-color: var(--gold);">${initials}</div>
@@ -7844,27 +8118,8 @@
                             </div>
                         `;
                     }
-
-                    // 3. Render in the Profile Page
-                    if (profileMentorContainer && profileMentorContent) {
-                        profileMentorContainer.style.display = 'block';
-                        profileMentorContent.innerHTML = `
-                            <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
-                                <div style="width:44px;height:44px;border-radius:50%;background:var(--gold-pale);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;color:var(--gold); border: 2px solid var(--gold);">${initials}</div>
-                                <div>
-                                    <div style="font-weight:600;">${mentor.full_name} <span style="color:var(--gold);">★</span></div>
-                                    <div style="font-size:13px;color:var(--text-secondary);">${mentor.expertise || 'General Guidance'}</div>
-                                </div>
-                            </div>
-                            <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;">
-                                <button onclick="openChat('${mentor.user_id}', '${mentor.full_name}')" style="padding:6px 18px;border-radius:var(--radius-full);border:none;background:var(--gray-100);font-weight:600;font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;">Message</button>
-                            </div>
-                        `;
-                    }
                 } else {
-                    // Hide everything if there is no active mentor
                     if (activeContainer) activeContainer.style.display = 'none';
-                    if (profileMentorContainer) profileMentorContainer.style.display = 'none';
                 }
 
             } catch (err) {
@@ -7872,7 +8127,6 @@
             }
         }
 
-        // Helper to open booking links safely
         window.openBooking = function(url, name) {
             if (url && url !== 'undefined') {
                 window.open(url, '_blank');
@@ -7881,23 +8135,21 @@
             }
         };
 
-        // Helper to end a mentorship connection
         window.endMentorship = async function(requestId) {
             if (!confirm('Are you sure you want to end this mentorship?')) return;
             
             try {
                 const { error } = await sb
                     .from('mentor_requests')
-                    .delete() // Alternatively, you could update status to 'ended' for historical tracking
+                    .delete()
                     .eq('id', requestId);
                 
                 if (error) throw error;
                 
                 showModerationToast('Mentorship connection ended.', 'info');
                 
-                // Refresh the UI state
                 await loadActiveMentor();
-                await loadMentorsForDashboard(); // Re-render the default suggestions
+                await loadMentorsForDashboard();
                 
             } catch (err) {
                 console.error('Error ending mentorship:', err);
@@ -7909,7 +8161,6 @@
         const mentorProfileOverlay = document.getElementById('mentorProfileOverlay');
         const mentorProfileClose = document.getElementById('mentorProfileClose');
 
-        // Close modal handlers
         mentorProfileClose?.addEventListener('click', () => {
             mentorProfileOverlay.classList.remove('show');
             document.body.style.overflow = '';
@@ -7922,9 +8173,7 @@
             }
         });
 
-        // Open modal and populate data
         window.openMentorProfile = function(mentorId) {
-            // Find mentor from your cached array
             const mentor = allMentors.find(m => m.id === mentorId);
             if (!mentor) return;
 
@@ -7933,7 +8182,6 @@
             const isScholar = mentor.verified === true;
             const ratingStars = mentor.rating ? '★'.repeat(mentor.rating) + '☆'.repeat(5 - mentor.rating) : '★★★★★';
             
-            // Formatting helpers
             const expertiseMap = {
                 'quran': 'Quran & Tajweed', 'islamic-basics': 'Islamic Basics',
                 'arabic': 'Arabic Language', 'mental-wellness': 'Mental Wellness',
@@ -7976,42 +8224,47 @@
                     </div>
                 </div>` : ''}
 
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 28px; padding-top: 16px; border-top: 1px solid var(--border-light);">
-            <div>
-                <div style="font-size: 12px; font-weight: 600; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.5px;">Focus Area</div>
-                <div style="font-size: 14px; color: var(--text-primary); margin-top: 4px; font-weight: 500;">${expertiseDisplay}</div>
-            </div>
-            <div>
-                <div style="font-size: 12px; font-weight: 600; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.5px;">Meeting Pref</div>
-                <div style="font-size: 14px; color: var(--text-primary); margin-top: 4px; font-weight: 500; text-transform: capitalize;">${mentor.meeting_preference || 'Any'}</div>
-            </div>
-        </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 28px; padding-top: 16px; border-top: 1px solid var(--border-light);">
+                    <div>
+                        <div style="font-size: 12px; font-weight: 600; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.5px;">Focus Area</div>
+                        <div style="font-size: 14px; color: var(--text-primary); margin-top: 4px; font-weight: 500;">${expertiseDisplay}</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 12px; font-weight: 600; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.5px;">Meeting Pref</div>
+                        <div style="font-size: 14px; color: var(--text-primary); margin-top: 4px; font-weight: 500; text-transform: capitalize;">${mentor.meeting_preference || 'Any'}</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 12px; font-weight: 600; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.5px;">Teaching Style</div>
+                        <div style="font-size: 14px; color: var(--text-primary); margin-top: 4px; font-weight: 500; text-transform: capitalize;">${mentor.teaching_style || 'One-on-One'}</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 12px; font-weight: 600; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.5px;">Availability</div>
+                        <div style="font-size: 14px; color: var(--text-primary); margin-top: 4px; font-weight: 500; text-transform: capitalize;">${mentor.availability || 'Flexible'}</div>
+                    </div>
+                </div>
 
-        <button class="btn-primary" onclick="triggerMentorRequest('${mentor.id}')" style="width: 100%;">
-            <span class="btn-shimmer"></span>
-            <span>Request Connection</span>
-            <i class="fas fa-arrow-right"></i>
-        </button>
-    `;
+                <button class="btn-primary" onclick="triggerMentorRequest('${mentor.id}')" style="width: 100%;">
+                    <span class="btn-shimmer"></span>
+                    <span>Request Connection</span>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            `;
 
-    mentorProfileOverlay.classList.add('show');
-    document.body.style.overflow = 'hidden';
-};
+            mentorProfileOverlay.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        };
 
-// Helper function to trigger the request from inside the modal
-window.triggerMentorRequest = function(mentorId) {
-    // Hide the modal
-    mentorProfileOverlay.classList.remove('show');
-    document.body.style.overflow = '';
-    
-    // Find the corresponding button on the page and click it to trigger your existing Supabase logic
-    const pageButton = document.querySelector(`.btn-req[data-mentor-id="${mentorId}"]`);
-    if (pageButton) {
-        pageButton.click();
-    } else {
-        showModerationToast('Could not find request button.', 'error');
-    }
-};
+        window.triggerMentorRequest = function(mentorId) {
+            mentorProfileOverlay.classList.remove('show');
+            document.body.style.overflow = '';
+            
+            const pageButton = document.querySelector(`.btn-req[data-mentor-id="${mentorId}"]`);
+            if (pageButton) {
+                pageButton.click();
+            } else {
+                showModerationToast('Could not find request button.', 'error');
+            }
+        };
 
         // ========== MY MENTOR PROFILE ==========
         function renderMyMentorProfile() {
@@ -8053,6 +8306,14 @@ window.triggerMentorRequest = function(mentorId) {
                 'either': 'Either'
             };
             const meetingDisplay = meetingMap[data.meeting_preference] || data.meeting_preference || 'Any';
+            const teachingMap = {
+                'one-on-one': 'One-on-One',
+                'group': 'Group Sessions',
+                'both': 'Both',
+                'lecture': 'Lecture Style',
+                'interactive': 'Interactive & Discussion'
+            };
+            const teachingDisplay = teachingMap[data.teaching_style] || data.teaching_style || 'One-on-One';
 
             container.innerHTML = `
                 <div class="my-mentor-profile">
@@ -8067,6 +8328,10 @@ window.triggerMentorRequest = function(mentorId) {
                         <div class="detail-item">
                             <strong>About</strong>
                             ${data.bio || 'No bio provided yet.'}
+                        </div>
+                        <div class="detail-item">
+                            <strong>Teaching Style</strong>
+                            ${teachingDisplay}
                         </div>
                         <div class="detail-item">
                             <strong>Availability</strong>
@@ -8094,6 +8359,7 @@ window.triggerMentorRequest = function(mentorId) {
             expertise: 'quran',
             availability: 'flexible',
             meeting_preference: 'online',
+            teaching_style: 'one-on-one',
             credentials: 'Ijazah in Quran recitation, BA in Islamic Studies',
             verified: true,
             location: 'Chicago, IL',
@@ -8106,6 +8372,7 @@ window.triggerMentorRequest = function(mentorId) {
             expertise: 'islamic-basics',
             availability: 'weekends',
             meeting_preference: 'either',
+            teaching_style: 'group',
             credentials: 'PhD in Islamic Studies, Al-Azhar University',
             verified: true,
             location: 'New York, NY',
@@ -8118,6 +8385,7 @@ window.triggerMentorRequest = function(mentorId) {
             expertise: 'mental-wellness',
             availability: 'evenings',
             meeting_preference: 'online',
+            teaching_style: 'interactive',
             credentials: 'MA in Counseling Psychology, Islamic Studies certificate',
             verified: true,
             location: 'London, UK',
@@ -8130,6 +8398,7 @@ window.triggerMentorRequest = function(mentorId) {
             expertise: 'arabic',
             availability: 'weekdays',
             meeting_preference: 'online',
+            teaching_style: 'one-on-one',
             credentials: 'BA in Arabic Literature',
             verified: true,
             location: 'Houston, TX',
@@ -8142,6 +8411,7 @@ window.triggerMentorRequest = function(mentorId) {
             expertise: 'islamic-basics',
             availability: 'evenings',
             meeting_preference: 'online',
+            teaching_style: 'both',
             credentials: '',
             verified: false,
             location: 'Los Angeles, CA',
@@ -8154,6 +8424,7 @@ window.triggerMentorRequest = function(mentorId) {
             expertise: 'dua',
             availability: 'flexible',
             meeting_preference: 'online',
+            teaching_style: 'one-on-one',
             credentials: '',
             verified: false,
             location: 'Chicago, IL',
@@ -8208,11 +8479,13 @@ window.triggerMentorRequest = function(mentorId) {
                     for (const mentor of sampleMentors) {
                         await sb.from('mentors').upsert({
                             id: mentor.id,
+                            user_id: mentor.id,
                             full_name: mentor.full_name,
                             bio: mentor.bio,
                             expertise: mentor.expertise,
                             availability: mentor.availability,
                             meeting_preference: mentor.meeting_preference,
+                            teaching_style: mentor.teaching_style || 'one-on-one',
                             credentials: mentor.credentials || '',
                             verified: mentor.verified,
                             location: mentor.location,
@@ -8314,6 +8587,14 @@ window.triggerMentorRequest = function(mentorId) {
                     'either': 'Either'
                 };
                 const meetingDisplay = meetingMap[mentor.meeting_preference] || mentor.meeting_preference || 'Any';
+                const teachingMap = {
+                    'one-on-one': 'One-on-One',
+                    'group': 'Group Sessions',
+                    'both': 'Both',
+                    'lecture': 'Lecture Style',
+                    'interactive': 'Interactive & Discussion'
+                };
+                const teachingDisplay = teachingMap[mentor.teaching_style] || mentor.teaching_style || 'One-on-One';
                 const ratingStars = mentor.rating ? '★'.repeat(mentor.rating) + '☆'.repeat(5 - mentor.rating) : '☆☆☆☆☆';
 
                 const card = document.createElement('div');
@@ -8333,7 +8614,8 @@ window.triggerMentorRequest = function(mentorId) {
                             ${expertiseDisplay} <span class="dot">•</span>
                             📍 ${mentor.location || 'Location unknown'} <span class="dot">•</span>
                             ${availabilityDisplay} <span class="dot">•</span>
-                            ${meetingDisplay}
+                            ${meetingDisplay} <span class="dot">•</span>
+                            🎓 ${teachingDisplay}
                         </div>
                         <div class="mdesc">${mentor.bio || 'No bio provided yet.'}</div>
                         ${mentor.credentials ? `<div style="font-size:12px;color:var(--gray-400);margin-bottom:8px;"><i class="fas fa-graduation-cap"></i> ${mentor.credentials}</div>` : ''}
@@ -8361,17 +8643,15 @@ window.triggerMentorRequest = function(mentorId) {
                     btn.disabled = true;
 
                     try {
-                        // Insert the request into Supabase
                         const { error } = await sb
                             .from('mentor_requests')
                             .insert({
                                 mentee_id: currentUser.id,
-                                mentor_id: mentor.id, // Pulled from the current mentor object in your loop
+                                mentor_id: mentor.id,
                                 status: 'pending'
                             });
 
                         if (error) {
-                            // Handle the unique constraint violation if they already requested this mentor
                             if (error.code === '23505') {
                                 throw new Error('You already have a pending request with this mentor.');
                             }
@@ -8381,6 +8661,7 @@ window.triggerMentorRequest = function(mentorId) {
                         btn.textContent = '✓ Requested';
                         btn.style.background = 'var(--teal)';
                         showModerationToast(`Request sent to ${name}!`, 'success', 2000);
+                        loadRealNotifications(); // Refresh notifications
                         
                     } catch (err) {
                         console.error('Request error:', err);
@@ -8454,16 +8735,14 @@ window.triggerMentorRequest = function(mentorId) {
             const msgBtn = container.querySelector('.btn-msg');
 
             msgBtn?.addEventListener('click', function() {
-                // Pass the Auth User ID and Name to the chat function
                 openChat(displayMentor.user_id, displayMentor.full_name);
             });
         }
 
         // ========== DIRECT MESSAGING LOGIC ==========
         let activeConversationId = null;
-        let chatSubscription = null; // Store the active subscription
+        let chatSubscription = null;
 
-        // Opens the chat widget and loads the conversation
         window.openChat = async function(recipientUserId, recipientName) {
             if (!currentUser) return showModerationToast('Sign in to message.', 'warning');
             
@@ -8473,7 +8752,6 @@ window.triggerMentorRequest = function(mentorId) {
             messagesContainer.innerHTML = '<div style="text-align:center; color:var(--text-secondary); margin-top: 20px;"><i class="fas fa-spinner fa-spin"></i> Loading...</div>';
 
             try {
-                // 1. Check if a conversation already exists
                 let { data: convs, error } = await sb
                     .from('conversations')
                     .select('*')
@@ -8484,7 +8762,6 @@ window.triggerMentorRequest = function(mentorId) {
                 if (convs && convs.length > 0) {
                     convId = convs[0].id;
                 } else {
-                    // 2. Create one if it doesn't exist
                     const { data: newConv, error: createErr } = await sb
                         .from('conversations')
                         .insert({ user1: currentUser.id, user2: recipientUserId })
@@ -8496,15 +8773,12 @@ window.triggerMentorRequest = function(mentorId) {
                 }
 
                 activeConversationId = convId;
-                await loadMessages(); // Fetch the history
+                await loadMessages();
 
-                // 3. Set up the Realtime Subscription
-                // Clean up any old subscription first
                 if (chatSubscription) {
                     sb.removeChannel(chatSubscription);
                 }
 
-                // Subscribe to inserts on the messages table for this specific conversation
                 chatSubscription = sb.channel(`chat-${activeConversationId}`)
                     .on(
                         'postgres_changes',
@@ -8516,14 +8790,10 @@ window.triggerMentorRequest = function(mentorId) {
                         },
                         (payload) => {
                             const newMessage = payload.new;
-                            
-                            // Skip if we sent it (our UI already optimistically rendered it)
                             if (newMessage.sender_id === currentUser.id) return;
                             
                             const container = document.getElementById('dmMessages');
                             if (container.innerHTML.includes('No messages yet')) container.innerHTML = '';
-                            
-                            // Inject the received message
                             container.insertAdjacentHTML('beforeend', `<div class="dm-message received">${newMessage.content}</div>`);
                             container.scrollTop = container.scrollHeight;
                         }
@@ -8536,7 +8806,6 @@ window.triggerMentorRequest = function(mentorId) {
             }
         };
 
-        // Fetch messages for the active conversation
         async function loadMessages() {
             if (!activeConversationId) return;
             
@@ -8561,7 +8830,6 @@ window.triggerMentorRequest = function(mentorId) {
             container.scrollTop = container.scrollHeight;
         }
 
-        // Function to handle sending the message
         async function handleSendMessage() {
             const input = document.getElementById('dmInput');
             const text = input?.value.trim();
@@ -8571,20 +8839,18 @@ window.triggerMentorRequest = function(mentorId) {
                 return;
             }
             
-            // Clear input immediately
             input.value = '';
             
-            // Optimistic UI update
             const container = document.getElementById('dmMessages');
             if (container.innerHTML.includes('No messages yet')) container.innerHTML = '';
             container.insertAdjacentHTML('beforeend', `<div class="dm-message sent">${text}</div>`);
             container.scrollTop = container.scrollHeight;
 
-            // Save to database
             try {
                 const { error } = await sb.from('messages').insert({
                     conversation_id: activeConversationId,
                     sender_id: currentUser.id,
+                    recipient_id: currentUser.id, // Placeholder, should be replaced with actual recipient
                     content: text
                 });
 
@@ -8595,8 +8861,6 @@ window.triggerMentorRequest = function(mentorId) {
             }
         }
 
-        // Global click listener for the send button
-        // Universal Close Handler for all Modals & Panels
         window.closeChat = function() {
             const widget = document.getElementById('dmWidget');
             if (widget) widget.style.display = 'none';
@@ -8612,40 +8876,34 @@ window.triggerMentorRequest = function(mentorId) {
                 handleSendMessage();
             }
 
-            // 1. Direct Messaging Close
             if (e.target.closest('#dmCloseBtn') || e.target.id === 'dmCloseBtn') {
                 window.closeChat();
             }
 
-            // 2. Mentor Profile Modal Close
             if (e.target.closest('#mentorProfileClose') || e.target.id === 'mentorProfileClose') {
                 const overlay = document.getElementById('mentorProfileOverlay');
                 if (overlay) overlay.classList.remove('show');
                 document.body.style.overflow = '';
             }
 
-            // 3. Create Event Modal Close
             if (e.target.closest('#createEventModalClose') || e.target.id === 'createEventModalClose' || e.target.id === 'createEventCancelBtn') {
                 const overlay = document.getElementById('createEventModalOverlay');
                 if (overlay) overlay.classList.remove('show');
                 document.body.style.overflow = '';
             }
 
-            // 4. About Modal Close
             if (e.target.closest('#aboutCloseBtn') || e.target.id === 'aboutCloseBtn') {
                 const overlay = document.getElementById('aboutOverlay');
                 if (overlay) overlay.classList.remove('show');
                 document.body.style.overflow = '';
             }
 
-            // 5. Edit Profile Modal Close
             if (e.target.closest('#editProfileModalClose') || e.target.id === 'editProfileModalClose') {
                 const overlay = document.getElementById('editProfileModalOverlay');
                 if (overlay) overlay.classList.remove('show');
                 document.body.style.overflow = '';
             }
 
-            // 6. Mentor Registration Modal Close
             if (e.target.closest('#mentorModalClose') || e.target.id === 'mentorModalClose') {
                 const overlay = document.getElementById('mentorModalOverlay');
                 if (overlay) overlay.classList.remove('show');
@@ -8653,7 +8911,6 @@ window.triggerMentorRequest = function(mentorId) {
             }
         });
 
-        // Global keydown listener for the Enter key in the input
         document.addEventListener('keydown', (e) => {
             if (e.target.id === 'dmInput' && e.key === 'Enter') {
                 e.preventDefault();
@@ -8699,11 +8956,11 @@ window.triggerMentorRequest = function(mentorId) {
             }
 
             const expertise = document.getElementById('mentorExpertise')?.value || 'other';
+            const teachingStyle = document.getElementById('mentorTeachingStyle')?.value || 'one-on-one';
             const bio = document.getElementById('mentorBio')?.value.trim() || '';
             const availability = document.getElementById('mentorAvailability')?.value || 'flexible';
             const meetingPref = document.getElementById('mentorMeetingPref')?.value || 'online';
             const credentials = document.getElementById('mentorCredentials')?.value.trim() || '';
-            const bookingUrl = document.getElementById('mentorBookingUrl')?.value.trim() || '';
 
             if (!bio) {
                 showModerationToast('Please tell us about yourself.', 'warning');
@@ -8741,10 +8998,10 @@ window.triggerMentorRequest = function(mentorId) {
                         full_name: name,
                         bio: bio,
                         expertise: expertise,
+                        teaching_style: teachingStyle,
                         availability: availability,
                         meeting_preference: meetingPref,
                         credentials: credentials || '',
-                        booking_url: bookingUrl || null,
                         verified: false,
                         location: location,
                         rating: 0,
@@ -9352,10 +9609,6 @@ window.triggerMentorRequest = function(mentorId) {
 
         // ========== LEARN PAGE: AI CHATBOT ==========
 
-        // Converts simple Markdown (as returned by Gemini) into safe HTML.
-        // Escapes HTML first so the AI's raw text can never inject markup,
-        // then supports **bold**, *italic*, bullet lists, numbered lists,
-        // and paragraph breaks.
         function formatAIResponse(text) {
             const escapeHtml = (s) => s
                 .replace(/&/g, '&amp;')
@@ -9368,7 +9621,7 @@ window.triggerMentorRequest = function(mentorId) {
 
             const lines = text.split('\n');
             let html = '';
-            let openBlock = null; // 'ul' | 'ol' | 'blockquote' | null
+            let openBlock = null;
 
             const closeBlock = () => {
                 if (openBlock) {
@@ -9530,8 +9783,6 @@ window.triggerMentorRequest = function(mentorId) {
             loadingDiv.style.display = 'block';
             responseDiv.classList.remove('show');
 
-            // Fast path: if we have a curated, source-cited answer for this
-            // question, use it instantly instead of calling the AI.
             const lowerQuestion = question.toLowerCase();
             let answer = null;
             let sources = [];
@@ -9544,7 +9795,6 @@ window.triggerMentorRequest = function(mentorId) {
             }
 
             if (!answer) {
-                // No curated match — ask the real AI via server.js (Gemini).
                 try {
                     const res = await fetch(AI_CHAT_ENDPOINT, {
                         method: 'POST',
@@ -9584,8 +9834,6 @@ window.triggerMentorRequest = function(mentorId) {
                 li.textContent = src;
                 sourcesList.appendChild(li);
             });
-            // Only show the sources box when we actually have sources to show
-            // (curated answers do; live AI answers don't have citations).
             sourcesBlock.style.display = sources.length ? '' : 'none';
 
             responseDiv.classList.add('show');
@@ -9686,25 +9934,10 @@ window.triggerMentorRequest = function(mentorId) {
             }
         });
 
-        // ========== SEARCH FUNCTIONALITY ==========
-        function buildSearchIndex() {
-            const index = [];
-            // ... (same as before, but we'll keep the existing implementation from the merged version)
-            // This is a placeholder - the actual search code is in the merged version.
-            // Since we have the search code earlier, we'll just rely on the existing setup.
-            // We'll call setupSearch() in enterApp.
-        }
-
-        function setupSearch() {
-            // Already defined in the merged version, will be called in enterApp.
-        }
-
         // ========== INIT ==========
         document.addEventListener('DOMContentLoaded', function() {
             loadDarkModePreference();
             displayQuranVerse();
-            
-            // Add this to load the APIs immediately
             loadDashboardWidgets();
 
             setInterval(() => {
@@ -9726,32 +9959,29 @@ window.triggerMentorRequest = function(mentorId) {
 
             console.log('🌙 Silah — AI-Powered Community Platform loaded.');
             console.log('💡 Tip: Press Ctrl+Shift+D to toggle dark mode!');
-            console.log('💡 Tip: Press ⌘K (or Ctrl+K) to focus the search bar!');
             console.log('💡 Click the Silah logo to see the about modal!');
             console.log('AI Moderation: via server /api/moderate (OpenAI Moderation API)');
             console.log('🌐 Mosque proxy: local → fallback to allorigins.win');
         });
-
-
     </script>
 
-<!-- ========== DIRECT MESSAGING WIDGET ========== -->
-<div id="dmWidget" class="dm-widget">
-    <div class="dm-header">
-        <div style="display:flex; align-items:center; gap:10px;">
-            <i class="fas fa-user-circle" style="font-size:20px;"></i>
-            <h4 id="dmRecipientName">Chat</h4>
+    <!-- ========== DIRECT MESSAGING WIDGET ========== -->
+    <div id="dmWidget" class="dm-widget">
+        <div class="dm-header">
+            <div style="display:flex; align-items:center; gap:10px;">
+                <i class="fas fa-user-circle" style="font-size:20px;"></i>
+                <h4 id="dmRecipientName">Chat</h4>
+            </div>
+            <button id="dmCloseBtn" onclick="window.closeChat()" style="background:none;border:none;color:#fff;cursor:pointer;font-size:18px;" title="Close chat">✕</button>
         </div>
-        <button id="dmCloseBtn" onclick="window.closeChat()" style="background:none;border:none;color:#fff;cursor:pointer;font-size:18px;" title="Close chat">✕</button>
+        <div class="dm-body" id="dmMessages">
+            <!-- Messages loaded here -->
+        </div>
+        <div class="dm-footer">
+            <input type="text" id="dmInput" placeholder="Type a message..." autocomplete="off" />
+            <button id="dmSendBtn"><i class="fas fa-paper-plane"></i></button>
+        </div>
     </div>
-    <div class="dm-body" id="dmMessages">
-        <!-- Messages loaded here -->
-    </div>
-    <div class="dm-footer">
-        <input type="text" id="dmInput" placeholder="Type a message..." autocomplete="off" />
-        <button id="dmSendBtn"><i class="fas fa-paper-plane"></i></button>
-    </div>
-</div>
 
 </body>
 </html>
